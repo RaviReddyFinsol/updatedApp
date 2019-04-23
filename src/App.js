@@ -19,16 +19,29 @@ const mapDispatchToProps = (dispatch) => {
 
 class App extends Component {
 
+shouldComponentUpdate(){
+  console.log("app should update ",this.props.token);
+  return true;
+}
+
+componentWillUpdate(){
+  console.log("app will update ",this.props.token);
+}
+
+componentDidUpdate(){
+  console.log("app did update ",this.props.token);
+}
+
   componentDidMount(){
-  console.log("app did ",this.props.token);
+  console.log("app did mount",this.props.token);
   //this.props.userLogin();
   //console.log("app after did ",this.props.token);
 }
 
 componentWillMount(){
-  console.log("app will ",this.props.token);
+  console.log("app will mount",this.props.token);
   this.props.userLogin();
-  console.log("app after will ",this.props.token);
+  // console.log("app after will ",this.props.token);
 }
   render() {
     console.log("app render ",this.props.token);

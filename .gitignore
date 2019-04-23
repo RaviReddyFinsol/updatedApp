@@ -5,6 +5,7 @@ node_modules/
 
 #ignore file
 public/manifest.json
+README.md
 
 # dependencies
 /node_modules
