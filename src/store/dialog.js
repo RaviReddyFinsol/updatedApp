@@ -1,20 +1,19 @@
 const initialState = {
-    token:undefined
+    isDialogOpened:false
   };
   
   export default function authReducer(state = initialState, action) {
       switch(action.type){
-          case 'LOGIN':{
-            console.log(action.val)
+          case 'OPEN':{
               return {
                 ...state,
-                token:action.val
+                isDialogOpened:true
               };
           }
-          case 'LOGOUT':{
+          case 'CLOSE':{
             return {
               ...state,
-              token:undefined
+              isDialogOpened:false
             };
         }
         default : return state;

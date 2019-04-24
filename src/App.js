@@ -1,57 +1,66 @@
-import React, { Component } from 'react';
-import './App.css';
-import Header from './Header';
-import Main from './Main';
-import {connect} from "react-redux";
+import React, { Component } from "react";
+import "./App.css";
+import Header from "./components/Header";
+import Routes from "./components/Routes";
+import { withCookies } from "react-cookie";
+import { getCookie } from "./cookies/cookie";
+import { connect } from "react-redux";
+import * as actionTypes from "./store/actionTypes";
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
-    token:state.token
+    token: state.auth.token,
+    isDialogOpened: state.dialog.isDialogOpened
   };
-}
-
-const mapDispatchToProps = (dispatch) => {
+};
+const mapDispatchToProps = dispatch => {
   return {
-    userLogin: () => dispatch({type:'LOGIN'}),
-    userLogout: () => dispatch({type:'LOGOUT'})
+    closeDialog: () => dispatch({ type: actionTypes.CLOSE_DIALOG }),
+    openDialog: () => dispatch({ type: actionTypes.OPEN_DIALOG }),
+    userLogin: token => dispatch({ type: actionTypes.USER_LOGIN, val: token })
   };
-}
+};
 
 class App extends Component {
 
-shouldComponentUpdate(){
-  console.log("app should update ",this.props.token);
-  return true;
-}
+  componentWillMount() {
+    //this.props.cookies.remove("NR_Token");
+    var token = getCookie(this.props.cookies);
+    console.log("App will mount ", token);
+    if (token !== undefined) {
+      this.props.userLogin(token);
+    }
+    // console.log("App will mount ", this.props.token,this.props.isDialogOpened);
+    // this.props.userLogin(15);
+  }
 
-componentWillUpdate(){
-  console.log("app will update ",this.props.token);
-}
+  componentDidMount() {
+    console.log("App did mount ", this.props.token);
+  }
 
-componentDidUpdate(){
-  console.log("app did update ",this.props.token);
-}
+  componentDidUpdate() {
+    console.log("App did update ", this.props.token);
+  }
 
-  componentDidMount(){
-  console.log("app did mount",this.props.token);
-  //this.props.userLogin();
-  //console.log("app after did ",this.props.token);
-}
+  componentWillUpdate() {
+    console.log("App will update ", this.props.token);
+  }
 
-componentWillMount(){
-  console.log("app will mount",this.props.token);
-  this.props.userLogin();
-  // console.log("app after will ",this.props.token);
-}
   render() {
-    console.log("app render ",this.props.token);
+    console.log("App render: ", this.props.token);
     return (
       <div className="App">
-        {/* <Header /> */}
-        <Main />
+        <Header />
+        <h2>Natural Remedy</h2>
+        <Routes />
       </div>
     );
   }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(App);
+export default withCookies(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(App)
+);

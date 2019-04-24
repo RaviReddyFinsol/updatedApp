@@ -1,55 +1,47 @@
 import React, { Component } from 'react';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Button from '@material-ui/core/Button';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Grow from '@material-ui/core/Grow';
-import Paper from '@material-ui/core/Paper';
-import Popper from '@material-ui/core/Popper';
-import MenuItem from '@material-ui/core/MenuItem';
-import MenuList from '@material-ui/core/MenuList';
+import {connect} from "react-redux";
+import { withCookies } from "react-cookie";
+
+const mapStateToProps = state => {
+  return {
+token:state.auth.token,
+isDialog:state.dialog.isDialogOpened
+  };
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    userLogin: (num) => dispatch({type:'LOGIN',val:num}),
+    userLogout: () => dispatch({type:'LOGOUT'})
+  };
+}
 
 class Header extends Component {
-    constructor(props){
-        super(props);
-        this.state = {open:false}
+   
+    componentDidMount(){
+      console.log("Header did mount ",this.props.token);      
     }
+    
+    componentWillMount(){
+      console.log("Header will mount ",this.props.token,this.props.isDialog);
+    }
+    
+    componentWillUpdate(){
+      console.log("Header will update ",this.props.token);
+    }
+    
+    componentDidUpdate(){
+      console.log("Header did update ",this.props.token);
+    }
+
     render() { 
+      console.log("Header render ",this.props.token);
         return ( 
-      <AppBar position="static">
-        <Toolbar>         
-        <Button
-            buttonRef={node => {
-              this.anchorEl = node;
-            }}
-            aria-owns={this.state.open ? 'menu-list-grow' : undefined}
-            aria-haspopup="true"
-            onClick={this.handleToggle}
-          >
-            Toggle Menu Grow
-          </Button>
-          <Popper open={this.state.open} anchorEl={this.anchorEl} transition disablePortal>
-            {({ TransitionProps, placement }) => (
-              <Grow
-                {...TransitionProps}
-                id="menu-list-grow"
-                style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
-              >
-                <Paper>
-                  <ClickAwayListener onClickAway={this.handleClose}>
-                    <MenuList>
-                      <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-                      <MenuItem onClick={this.handleClose}>My account</MenuItem>
-                      <MenuItem onClick={this.handleClose}>Logout</MenuItem>
-                    </MenuList>
-                  </ClickAwayListener>
-                </Paper>
-              </Grow>
-            )}
-          </Popper>
-        </Toolbar>
-      </AppBar>);
+          <h1>header</h1>
+      );
     }
 }
  
-export default Header;
+export default  withCookies(
+  connect(mapStateToProps,
+    mapDispatchToProps)(Header));
