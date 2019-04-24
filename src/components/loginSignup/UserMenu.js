@@ -11,6 +11,12 @@ import { connect } from "react-redux";
 import * as actionTypes from "../../store/actionTypes";
 import { Link } from "react-router-dom";
 
+const mapStateToProps = state => {
+  return {
+    token:state.auth.token
+  }
+}
+
 const mapDispatchToProps = dispatch => {
   return {
     logout: () => dispatch({ type: actionTypes.USER_LOGOUT })
@@ -21,10 +27,6 @@ class UserMenu extends Component {
   state = {
     open: false
   };
-
-  userProfile = () => {};
-
-  openRemedies = () => {};
 
   userLogout = () => {
     this.props.cookies.remove("NR_Token");
@@ -71,13 +73,13 @@ class UserMenu extends Component {
               <Paper>
                 <ClickAwayListener onClickAway={this.handleClose}>
                   <MenuList onMouseLeave={this.handleClose}>
-                    <Link to="/userProfile">
+                    <Link to={{pathname :`/userProfile/${this.props.token}`}}>
                       <MenuItem onClick={this.userProfile}>My Profile</MenuItem>
                     </Link>
-                    <Link to="/userFavourites">
+                    <Link to={{pathname :`/userFavourites/${this.props.token}`}}>
                       <MenuItem onClick={this.handleClose}>Favourites</MenuItem>
                     </Link>
-                    <Link to="/userRemedies">
+                    <Link to={{pathname :`/userRemedies/${this.props.token}`}}>
                       <MenuItem onClick={this.openRemedies}>
                         My Remedies
                       </MenuItem>
@@ -96,7 +98,7 @@ class UserMenu extends Component {
 
 export default withCookies(
   connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
   )(UserMenu)
 );

@@ -10,9 +10,9 @@ export default function Routes() {
   return (
     <Switch>
       <Route exact path="/" component={Home} />
-      <ProtectedRoute path="/userProfile" component={Profile} token={1} />
-      <ProtectedRoute path="/userRemedies" component={Remedies} token={1} />
-      <ProtectedRoute path="/userFavourites" component={Favourites} token={1} />
+      <ProtectedRoute path="/userProfile/:token" component={Profile} token={1} />
+      <ProtectedRoute path="/userRemedies/:token" component={Remedies} token={1} />
+      <ProtectedRoute path="/userFavourites/:token" component={Favourites} token={1} />
       <Route path="*" component={Home} />
     </Switch>
   );
