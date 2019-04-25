@@ -1,14 +1,15 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { Route, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 export default class Profile extends Component {
 
-  componentWillMount(){
+ componentDidMount(){
     console.log("profile ",this.props.match.params.token);
-  }
+    // <Redirect to={{pathname:'/'}} />
+ }
 
-  render() {
+ render() {    
     return (
       <div>
         <h1>Profile</h1>

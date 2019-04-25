@@ -23,7 +23,7 @@ export class Signup extends Component {
       signupID: "",
       password: "",
       signupError: "",
-      isLoading: ""
+      isLoading: false
     };
   }
 
@@ -32,6 +32,7 @@ export class Signup extends Component {
   };
 
   signUp = () => {
+    this.state.isLoading = true;
     var userSignupDetails = {
       userName: this.state.userName,
       userID: this.state.signupID,
@@ -47,11 +48,13 @@ export class Signup extends Component {
         } else {
           this.setState({ signupError: val.message });
         }
+        this.props.isLoading = false;
         console.log(val);
       })
       .catch(err => {
         this.setState({ signupError: err });
         this.props.closeDialog();
+        this.props.isLoading = false;
       });
   };
 

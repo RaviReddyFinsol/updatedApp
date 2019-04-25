@@ -23,7 +23,7 @@ const mapDispatchToProps = dispatch => {
 class App extends Component {
 
   componentWillMount() {
-    //setCookie(this.props.cookies,5);
+    setCookie(this.props.cookies,5);
     //this.props.cookies.remove("NR_Token");
     var token = getCookie(this.props.cookies);
     console.log("App will mount ", token);
