@@ -32,7 +32,6 @@ export class Signup extends Component {
   };
 
   signUp = () => {
-    this.state.isLoading = true;
     var userSignupDetails = {
       userName: this.state.userName,
       userID: this.state.signupID,

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
-import Header from "./components/Header";
-import Routes from "./components/Routes";
+import Header from "./components/mainPage/Header";
+import Routes from "./components/routes/Routes";
 import { withCookies } from "react-cookie";
 import { getCookie ,setCookie} from "./cookies/cookie";
 import { connect } from "react-redux";
@@ -23,8 +23,8 @@ const mapDispatchToProps = dispatch => {
 class App extends Component {
 
   componentWillMount() {
-    setCookie(this.props.cookies,5);
-    //this.props.cookies.remove("NR_Token");
+    setCookie(this.props.cookies,6);
+    //this.props.cookies.remove("NR_Token",{path:'/'});
     var token = getCookie(this.props.cookies);
     console.log("App will mount ", token);
     if (token !== undefined) {

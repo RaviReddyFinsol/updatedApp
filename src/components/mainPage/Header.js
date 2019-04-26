@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Button from "@material-ui/core/Button";
-import LoginSignup from "./loginSignup/LoginSignup";
+import LoginSignup from "../loginSignup/LoginSignup";
 import { Toolbar, Typography } from "@material-ui/core";
 import "./Header.css";
 import { connect } from "react-redux";
-import * as actionTypes from "../store/actionTypes";
-import UserMenu from "./loginSignup/UserMenu";
+import * as actionTypes from "../../store/actionTypes";
+import UserMenu from "../loginSignup/UserMenu";
 import { withCookies } from "react-cookie";
 
 const mapStateToProps = state => {

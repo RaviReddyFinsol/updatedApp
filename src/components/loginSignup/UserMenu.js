@@ -29,7 +29,7 @@ class UserMenu extends Component {
   };
 
   userLogout = () => {
-    this.props.cookies.remove("NR_Token");
+    this.props.cookies.remove("NR_Token",{path:'/'});
     this.props.logout();
   };
 

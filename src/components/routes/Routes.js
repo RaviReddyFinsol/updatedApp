@@ -1,9 +1,9 @@
 import React from "react";
 import { Switch, Route } from "react-router-dom";
-import Profile from "./user/Profile";
-import Favourites from "./user/Favourites";
-import Remedies from "./user/Remedies";
-import Home from "./Home";
+import Profile from "../user/Profile";
+import Favourites from "../user/Favourites";
+import Remedies from "../user/remedies/Remedies";
+import Home from "../mainPage/Home";
 import ProtectedRoute from "./ProtectedRoute";
 
 export default function Routes() {
