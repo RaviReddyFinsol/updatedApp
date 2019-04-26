@@ -4,10 +4,11 @@ import TextField from "@material-ui/core/TextField";
 export default class RemedyStep extends Component{
     render(){
         return(
-            <div>
+            <React.Fragment>
+                {"Step"}
                 <TextField />
                 <input type="file" />
-            </div>
+            </React.Fragment>
         )
     }
 }
