@@ -12,7 +12,8 @@ import {connect} from "react-redux";
 
 const mapStateToProps = state => {
     return{
-        steps:state.remedyStep.remedySteps
+        steps:state.remedyStep.remedySteps,
+        stepCounter:state.remedyStep.stepCounter
     }
 }
 
@@ -24,20 +25,13 @@ const mapDispatchToProps = dispatch => {
 
 class AddRemedies extends Component{
     
-    constructor(props){
-        super(props)
-        this.state = {
-            stepCounter :1
-        }
-    }
-    
     componentDidMount(){
         console.log("add rem : ");
     }
 
 AddRemedyStep = () => {
-    this.setState({stepCounter:this.state.stepCounter+1});
-    this.props.addStep(this.state.stepCounter);
+    this.setState({stepCounter:this.props.stepCounter});
+    this.props.addStep(this.props.stepCounter);
 }
 
     render(){
