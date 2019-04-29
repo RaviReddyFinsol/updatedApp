@@ -7,12 +7,38 @@ import MenuItem from '@material-ui/core/MenuItem';
 //import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import RemedyStep from './RemedyStep';
+import * as actionTypes from '../../../store/actionTypes';
+import {connect} from "react-redux";
 
-export default class AddRemedies extends Component{
+const mapStateToProps = state => {
+    return{
+        steps:state.remedyStep.remedySteps
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return{
+        addStep: (stepNumber) => dispatch({type:actionTypes.ADD_STEP,payload:{"StepName":`Step${stepNumber}`,"description":""}})
+    }
+}
+
+class AddRemedies extends Component{
+    
+    constructor(props){
+        super(props)
+        this.state = {
+            stepCounter :1
+        }
+    }
     
     componentDidMount(){
         console.log("add rem : ");
     }
+
+AddRemedyStep = () => {
+    this.setState({stepCounter:this.state.stepCounter+1});
+    this.props.addStep(this.state.stepCounter);
+}
 
     render(){
         return(
@@ -33,7 +59,14 @@ export default class AddRemedies extends Component{
           <TextField label = "Video link" />
           <TextField label = "Ingridients" />
           <br />
-          <RemedyStep />
+          {
+              this.props.steps ?
+              this.props.steps.map(item=>(
+                 <RemedyStep key={item.StepName} StepName={item.StepName}/>
+              )) : "Steps here"
+          }
+          
+          <Button onClick={this.AddRemedyStep}>+</Button>{" Add Step"}
           <br/>
           <Button >Save</Button>
                  <br /> 
@@ -42,3 +75,5 @@ export default class AddRemedies extends Component{
     }
 
 }
+
+export default connect(mapStateToProps,mapDispatchToProps)(AddRemedies);
