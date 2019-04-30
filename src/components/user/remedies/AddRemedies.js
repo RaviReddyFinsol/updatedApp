@@ -19,7 +19,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return{
-        addStep: (stepNumber) => dispatch({type:actionTypes.ADD_STEP,payload:{"StepName":`Step${stepNumber}`,"description":""}})
+        addStep: (stepNumber) => dispatch({type:actionTypes.ADD_STEP,payload:{"stepName":`Step${stepNumber}`,"description":"","filePath":""}})
     }
 }
 
@@ -56,7 +56,7 @@ AddRemedyStep = () => {
           {
               this.props.steps ?
               this.props.steps.map(item=>(
-                 <RemedyStep key={item.StepName} StepName={item.StepName}/>
+                 <RemedyStep key={item.stepName} stepName={item.stepName} description={item.description} filePath={item.filePath}/>
               )) : "Steps here"
           }
           

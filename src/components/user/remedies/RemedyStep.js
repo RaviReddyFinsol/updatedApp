@@ -14,10 +14,10 @@ class RemedyStep extends Component{
     render(){
         return(
             <React.Fragment>
-                <h4>{this.props.StepName}</h4>
-                <TextField label="description"/>
-                <input type="file" />
-                <Button onClick={()=>this.props.removeStep(this.props.StepName)}>Remove</Button>
+                <h4>{this.props.stepName}</h4>
+                <TextField label="description" value={this.props.description}/>
+                <input type="file" value={this.props.filePath}/>
+                <Button onClick={()=>this.props.removeStep(this.props.stepName)}>Remove</Button>
             </React.Fragment>
         )
     }
