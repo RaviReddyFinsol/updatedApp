@@ -6,7 +6,6 @@ const initialState = {
 }
 
 export default function remedyStepReducer(state = initialState, action) {
-    debugger;
     switch (action.type) {
         case actionTypes.ADD_STEP: {
             return {
@@ -17,7 +16,7 @@ export default function remedyStepReducer(state = initialState, action) {
         }
         case actionTypes.REMOVE_STEP: {
             let stepCount = 1;
-            var modifiedSteps = [];
+            let modifiedSteps = [];
             for (let i = 0; i < state.remedySteps.length; i++) {
                 let modifiedStep = state.remedySteps[i];
                 if (modifiedStep.stepName !== action.val) {
@@ -33,8 +32,18 @@ export default function remedyStepReducer(state = initialState, action) {
             }
         }
         case actionTypes.DESCRIPTION_UPDATED: {
+            let modifiedSteps = [];
+            for (let i = 0; i < state.remedySteps.length; i++) {
+                let modifiedStep = state.remedySteps[i];
+                if (modifiedStep.stepName !== action.payload.stepName) {
+                    modifiedStep.description = action.payload.description;   
+                    modifiedStep.stepName = modifiedStep.stepName;
+                    modifiedSteps.push(modifiedStep);
+                }
+            }
             return {
-                ...state
+                ...state,
+                remedySteps: modifiedSteps
             }
         }
         case actionTypes.FILE_CHANGED: {

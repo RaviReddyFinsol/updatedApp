@@ -9,12 +9,12 @@ export default class Remedies extends Component {
   render() {
     return (
       <div>
-        <h1>Remedies</h1>
+        <h1>R</h1>
         <div className="row">
           <div className="colum">
-            <Link to={{ pathname: `/userRemedies/${this.props.match.params.token}` }}>My Remedies</Link>
-            <Link to={{ pathname: `/userRemedies/${this.props.match.params.token}/addRemedies` }}>New Remedy</Link>
-            <Link to={{ pathname: `/userRemedies/${this.props.match.params.token}/favourites` }}>Favourites</Link>
+            <Link to={{ pathname: `/userRemedies/${this.props.match.params.token}` }}>M R</Link>
+            <Link to={{ pathname: `/userRemedies/${this.props.match.params.token}/addRemedies` }}>N R</Link>
+            <Link to={{ pathname: `/userRemedies/${this.props.match.params.token}/favourites` }}>Fav</Link>
           </div>
           <div className="colum">
             <Switch>

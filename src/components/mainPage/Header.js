@@ -46,7 +46,7 @@ class Header extends Component {
       <AppBar className="flex-container">
         <Toolbar>
           <Typography color="inherit" variant="h6" style={{ flex: 1 }}>
-            Natural Remedy
+            N R
           </Typography>
 
           {this.props.token !== undefined ? (

@@ -74,14 +74,14 @@ class UserMenu extends Component {
                 <ClickAwayListener onClickAway={this.handleClose}>
                   <MenuList onMouseLeave={this.handleClose}>
                     <Link to={{pathname :`/userProfile/${this.props.token}`}}>
-                      <MenuItem onClick={this.userProfile}>My Profile</MenuItem>
+                      <MenuItem onClick={this.userProfile}>M P</MenuItem>
                     </Link>
                     <Link to={{pathname :`/userFavourites/${this.props.token}`}}>
-                      <MenuItem onClick={this.handleClose}>Favourites</MenuItem>
+                      <MenuItem onClick={this.handleClose}>Fav</MenuItem>
                     </Link>
                     <Link to={{pathname :`/userRemedies/${this.props.token}`}}>
                       <MenuItem onClick={this.openRemedies}>
-                        My Remedies
+                        M R
                       </MenuItem>
                     </Link>
                     <MenuItem onClick={this.userLogout}>Logout</MenuItem>
