@@ -50,8 +50,8 @@ class App extends Component {
     console.log("App render: ", this.props.token);
     return (
       <div className="App">
-        <Header />
-        <h2>Natural Remedy</h2>
+        {/* <Header />
+        <h2>Natural Remedy</h2> */}
         <Routes />
       </div>
     );

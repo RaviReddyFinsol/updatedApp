@@ -32,23 +32,25 @@ export default function remedyStepReducer(state = initialState, action) {
             }
         }
         case actionTypes.DESCRIPTION_UPDATED: {
-            let modifiedSteps = [];
-            for (let i = 0; i < state.remedySteps.length; i++) {
-                let modifiedStep = state.remedySteps[i];
-                if (modifiedStep.stepName !== action.payload.stepName) {
-                    modifiedStep.description = action.payload.description;   
-                    modifiedStep.stepName = modifiedStep.stepName;
-                    modifiedSteps.push(modifiedStep);
-                }
-            }
+       
+        let modifiedSteps = [...state.remedySteps];
+        let item = modifiedSteps.find(i=>i.stepName === action.payload.stepName);
+        item.description = action.payload.description;
+       
             return {
                 ...state,
-                remedySteps: modifiedSteps
+                remedySteps:modifiedSteps
             }
         }
         case actionTypes.FILE_CHANGED: {
+
+            let modifiedSteps = [...state.remedySteps];
+            let item = modifiedSteps.find(i=>i.stepName === action.payload.stepName);
+            item.filePath = action.payload.filePath;
+
             return {
-                ...state
+                ...state,
+                remedySteps:modifiedSteps
             }
         }
         default: {

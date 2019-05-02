@@ -30,8 +30,8 @@ class AddRemedies extends Component{
     }
 
 AddRemedyStep = () => {
-    this.setState({stepCounter:this.props.stepCounter});
-    this.props.addStep(this.props.stepCounter);
+    if(this.props.stepCounter <= 10)
+        this.props.addStep(this.props.stepCounter);
 }
 
     render(){
@@ -59,7 +59,7 @@ AddRemedyStep = () => {
                  <RemedyStep key={item.stepName} stepName={item.stepName} description={item.description} filePath={item.filePath}/>
               )) : "Steps here"
           }
-          
+          <br />
           <Button onClick={this.AddRemedyStep}>+</Button>{" Add Step"}
           <br/>
           <Button >Save</Button>
