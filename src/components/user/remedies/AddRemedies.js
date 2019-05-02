@@ -24,6 +24,20 @@ const mapDispatchToProps = dispatch => {
 }
 
 class AddRemedies extends Component{
+
+    constructor(props){
+        super(props);
+        this.state = {
+            remedyName:"",
+            remedyType:"H",
+            remedyForGender:"B",
+            age:"",
+            bodyPart:"",
+            timeToUse:"",
+            videoLink:"",
+            ingridients:"",
+        }
+    }
     
     componentDidMount(){
         console.log("add rem : ");
@@ -34,24 +48,28 @@ AddRemedyStep = () => {
         this.props.addStep(this.props.stepCounter);
 }
 
+inputChanged = (event) =>{
+    this.setState({[event.target.name]:event.target.value})
+}
+
     render(){
         return(
             <form>
-                 <TextField label="Name"/>  {" Type"} 
-                 <Select>
-            <MenuItem>H</MenuItem>
-            <MenuItem>B</MenuItem>
+                 <TextField label="Name" name="remedyName" onChange={this.inputChanged}/>  {" Type"} 
+                 <Select value={this.state.remedyType} onChange={this.inputChanged} name="remedyType">
+            <MenuItem value={"H"}>H</MenuItem>
+            <MenuItem value={"B"}>B</MenuItem>
           </Select> {" Type"} 
-          <Select>
-            <MenuItem>B</MenuItem>
-            <MenuItem>F</MenuItem>
-            <MenuItem>M</MenuItem>
+          <Select value={this.state.remedyForGender} name="remedyForGender" onChange={this.inputChanged} >
+            <MenuItem value={"B"}>B</MenuItem>
+            <MenuItem value={"F"}>F</MenuItem>
+            <MenuItem value={"M"}>M</MenuItem>
           </Select>
-          <TextField label = "Age" />
-          <TextField label = "Part" />
-          <TextField label = "Time" />
-          <TextField label = "Video link" />
-          <TextField label = "Ingridients" />
+          <TextField label = "Age" name="age" onChange={this.inputChanged} value={this.state.age}/>
+          <TextField label = "Part" name="bodyPart" onChange={this.inputChanged} value={this.state.bodyPart}/>
+          <TextField label = "Time" name="timeToUse" onChange={this.inputChanged} value={this.state.timeToUse}/>
+          <TextField label = "Video link" name="videoLink" onChange={this.inputChanged} value={this.state.videoLink} />
+          <TextField label = "Ingridients" name="ingridients" onChange={this.inputChanged} value={this.state.ingridients}/>
           <br />
           {
               this.props.steps ?
