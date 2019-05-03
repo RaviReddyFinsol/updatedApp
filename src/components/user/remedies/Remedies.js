@@ -1,13 +1,18 @@
 import React, { Component } from "react";
+import {Redirect} from "react-router-dom";
 import "./Remedies.css";
 import { Switch, Route, Link } from "react-router-dom";
 import ViewRemedies from './ViewRemedies';
 import AddRemedies from './AddRemedies';
 import FavouriteRemedies from './FavouriteRemedies';
 
+var istokenValid = true;
+
 export default class Remedies extends Component {
+
   render() {
     return (
+      istokenValid === true ? <Redirect to={{pathname:"/"}}/> : (
       <div>
         <h1>R</h1>
         <div className="row">
@@ -24,7 +29,7 @@ export default class Remedies extends Component {
             </Switch>
           </div>
         </div>
-      </div>
+      </div>)
     );
   }
 }
