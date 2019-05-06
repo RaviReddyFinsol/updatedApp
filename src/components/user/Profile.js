@@ -3,7 +3,7 @@ import {Redirect} from "react-router-dom";
 //import UpdatePassword from './UpdatePassword';
 //import Test from './Test';
 
-var istokenValid = true;
+var istokenValid = false;
 
 export default class Profile extends Component {
 

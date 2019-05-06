@@ -52,9 +52,35 @@ class AddRemedies extends Component {
         this.setState({ [event.target.name]: event.target.value })
     }
 
+    saveRemedy = (event) => {
+        event.preventDefault();
+        // const config = {
+        //     headers: {
+        //         'content-type': 'multipart/form-data'
+        //     }
+        // };
+        let formData = new FormData();
+        formData.append("remedyName", this.state.remedyName);
+        formData.append("remedyType", this.state.remedyType);
+        formData.append("remedyForGender", this.state.remedyForGender);
+        formData.append("age", this.state.age);
+        formData.append("bodyPart", this.state.bodyPart);
+        formData.append("timeToUse", this.state.timeToUse);
+        formData.append("videoLink", this.state.videoLink);
+        formData.append("ingridients", this.state.remedyType);
+        for (let step of this.props.steps) {
+            formData.append(`${step.stepName}_desc`, step.description);
+            formData.append(`${step.stepName}_file`, step.filePath);
+        }
+        for (let ff of formData.entries()) {
+            console.log(ff[0], ff[1]);
+        }
+
+    }
+
     render() {
         return (
-            <form>
+            <form onSubmit={this.saveRemedy}>
                 <TextField label="Name" name="remedyName" onChange={this.inputChanged} />  {" Type"}
                 <Select value={this.state.remedyType} onChange={this.inputChanged} name="remedyType">
                     <MenuItem value={"H"}>H</MenuItem>
@@ -80,7 +106,7 @@ class AddRemedies extends Component {
                 <br />
                 <Button onClick={this.AddRemedyStep}>+</Button>{" Add Step"}
                 <br />
-                <Button >Save</Button>
+                <Button type="submit">Save</Button>
                 <br />
             </form>
         );

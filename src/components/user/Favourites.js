@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import {Redirect} from "react-router-dom";
 
-var istokenValid = true;
+var istokenValid = false;
 
 export default class Favourites extends Component {
   render() {

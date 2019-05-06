@@ -6,7 +6,7 @@ import ViewRemedies from './ViewRemedies';
 import AddRemedies from './AddRemedies';
 import FavouriteRemedies from './FavouriteRemedies';
 
-var istokenValid = true;
+var istokenValid = false;
 
 export default class Remedies extends Component {
 
@@ -19,7 +19,7 @@ export default class Remedies extends Component {
           <div className="colum">
             <Link to={{ pathname: `/userRemedies/${this.props.match.params.token}` }}>M R</Link>
             <Link to={{ pathname: `/userRemedies/${this.props.match.params.token}/addRemedies` }}>N R</Link>
-            <Link to={{ pathname: `/userRemedies/${this.props.match.params.token}/favourites` }}>Fav</Link>
+            <Link to={{ pathname: `/userRemedies/${this.props.match.params.token}/favourites` }}>F R</Link>
           </div>
           <div className="colum">
             <Switch>
