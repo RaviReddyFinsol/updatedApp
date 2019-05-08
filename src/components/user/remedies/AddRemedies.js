@@ -9,6 +9,7 @@ import Select from '@material-ui/core/Select';
 import RemedyStep from './RemedyStep';
 import * as actionTypes from '../../../store/actionTypes';
 import { connect } from "react-redux";
+import axios from 'axios';
 
 const mapStateToProps = state => {
     return {
@@ -19,7 +20,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        addStep: (stepNumber) => dispatch({ type: actionTypes.ADD_STEP, payload: { "stepName": `Step${stepNumber}`, "description": "", "filePath": "" } })
+        addStep: (stepNumber) => dispatch({ type: actionTypes.ADD_STEP, payload: { "stepName": `Step${stepNumber}`, "description": "", "filePath": null } })
     }
 }
 
@@ -54,27 +55,33 @@ class AddRemedies extends Component {
 
     saveRemedy = (event) => {
         event.preventDefault();
-        // const config = {
-        //     headers: {
-        //         'content-type': 'multipart/form-data'
-        //     }
-        // };
+        const config = {
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
+        };
         let formData = new FormData();
-        formData.append("remedyName", this.state.remedyName);
-        formData.append("remedyType", this.state.remedyType);
-        formData.append("remedyForGender", this.state.remedyForGender);
-        formData.append("age", this.state.age);
-        formData.append("bodyPart", this.state.bodyPart);
-        formData.append("timeToUse", this.state.timeToUse);
-        formData.append("videoLink", this.state.videoLink);
-        formData.append("ingridients", this.state.remedyType);
+        // formData.append("remedyName", this.state.remedyName);
+        // formData.append("remedyType", this.state.remedyType);
+        // formData.append("remedyForGender", this.state.remedyForGender);
+        // formData.append("age", this.state.age);
+        // formData.append("bodyPart", this.state.bodyPart);
+        // formData.append("timeToUse", this.state.timeToUse);
+        // formData.append("videoLink", this.state.videoLink);
+        // formData.append("ingridients", this.state.remedyType);
         for (let step of this.props.steps) {
-            formData.append(`${step.stepName}_desc`, step.description);
+            //formData.append(`${step.stepName}_desc`, step.description);
             formData.append(`${step.stepName}_file`, step.filePath);
         }
         for (let ff of formData.entries()) {
             console.log(ff[0], ff[1]);
         }
+
+        axios.post("http://localhost:9003/upload",formData,config)
+        .then((response) => {
+            alert("The file is successfully uploaded");
+        }).catch((error) => {
+    });
 
     }
 

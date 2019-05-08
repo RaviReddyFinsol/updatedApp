@@ -21,7 +21,7 @@ class RemedyStep extends Component{
     
     fileUpdated = event =>
     {
-        this.props.fileChanged(this.props.stepName,event.target.value)
+        this.props.fileChanged(this.props.stepName,event.target.files[0])
     }
     
     render(){
@@ -29,7 +29,7 @@ class RemedyStep extends Component{
             <React.Fragment>
                 <h4>{this.props.stepName}</h4>
                 <TextField label="description" value={this.props.description} onChange={this.descriptionUpdated} required/>
-                <input type="file" value={this.props.filePath} onChange={this.fileUpdated} accept="image/*"/>
+                <input type="file" onChange={this.fileUpdated} accept="image/*"/>
                 <Button onClick={()=>this.props.removeStep(this.props.stepName)}>Remove</Button>
             </React.Fragment>
         )
