@@ -15,42 +15,40 @@ export default function remedyStepReducer(state = initialState, action) {
             }
         }
         case actionTypes.REMOVE_STEP: {
-            let stepCount = 1;
-            let modifiedSteps = [];
-            for (let i = 0; i < state.remedySteps.length; i++) {
-                let modifiedStep = state.remedySteps[i];
-                if (modifiedStep.stepName !== action.val) {
-                    modifiedStep.stepName = `Step${stepCount}`;
-                    modifiedSteps.push(modifiedStep);
-                    stepCount++;
+            if (state.remedySteps.length !== 0) {
+                let modifiedSteps = [...state.remedySteps];
+                modifiedSteps.pop();
+                return {
+                    ...state,
+                    stepCounter: state.stepCounter - 1,
+                    remedySteps: modifiedSteps
                 }
             }
-            return {
-                ...state,
-                stepCounter: state.stepCounter - 1,
-                remedySteps: modifiedSteps
+            else {
+                return {
+                    ...state
+                }
             }
         }
+
         case actionTypes.DESCRIPTION_UPDATED: {
-       
-        let modifiedSteps = [...state.remedySteps];
-        let item = modifiedSteps.find(i=>i.stepName === action.payload.stepName);
-        item.description = action.payload.description;
-       
+            let modifiedSteps = [...state.remedySteps];
+            let item = modifiedSteps.find(i => i.stepName === action.payload.stepName);
+            item.description = action.payload.description;
             return {
                 ...state,
-                remedySteps:modifiedSteps
+                remedySteps: modifiedSteps
             }
         }
         case actionTypes.FILE_CHANGED: {
 
             let modifiedSteps = [...state.remedySteps];
-            let item = modifiedSteps.find(i=>i.stepName === action.payload.stepName);
+            let item = modifiedSteps.find(i => i.stepName === action.payload.stepName);
             item.filePath = action.payload.filePath;
 
             return {
                 ...state,
-                remedySteps:modifiedSteps
+                remedySteps: modifiedSteps
             }
         }
         default: {

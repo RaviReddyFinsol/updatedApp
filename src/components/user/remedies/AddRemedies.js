@@ -20,7 +20,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        addStep: (stepNumber) => dispatch({ type: actionTypes.ADD_STEP, payload: { "stepName": `Step${stepNumber}`, "description": "", "filePath": null } })
+        addStep: (stepNumber) => dispatch({ type: actionTypes.ADD_STEP, payload: { "stepName": `Step${stepNumber}`, "description": "", "filePath": null } }),
+        removeStep : () => dispatch({type:actionTypes.REMOVE_STEP}),
     }
 }
 
@@ -44,7 +45,7 @@ class AddRemedies extends Component {
         console.log("add rem : ");
     }
 
-    AddRemedyStep = () => {
+    addRemedyStep = () => {
         if (this.props.stepCounter <= 10)
             this.props.addStep(this.props.stepCounter);
     }
@@ -111,7 +112,8 @@ class AddRemedies extends Component {
                         )) : "Steps here"
                 }
                 <br />
-                <Button onClick={this.AddRemedyStep}>+</Button>{" Add Step"}
+                <Button onClick={this.props.removeStep} > Delete last step</Button>
+                <Button onClick={this.addRemedyStep}>+</Button>{" Add Step"}
                 <br />
                 <Button type="submit">Save</Button>
                 <br />

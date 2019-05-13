@@ -6,7 +6,7 @@ import * as actionTypes from '../../../store/actionTypes';
 
 const mapDispatchToProps = dispatch =>{
     return {
-        removeStep : (stepName) => dispatch({type:actionTypes.REMOVE_STEP,val:stepName}),
+        
         descriptionChanged : (stepName,description) => dispatch({type:actionTypes.DESCRIPTION_UPDATED,payload:{stepName,description}}),
         fileChanged : (stepName,filePath) => dispatch({type:actionTypes.FILE_CHANGED,payload:{stepName,filePath}})
     }
@@ -29,8 +29,7 @@ class RemedyStep extends Component{
             <React.Fragment>
                 <h4>{this.props.stepName}</h4>
                 <TextField label="description" value={this.props.description} onChange={this.descriptionUpdated} required/>
-                <input type="file" onChange={this.fileUpdated} accept="image/*"/>
-                <Button onClick={()=>this.props.removeStep(this.props.stepName)}>Remove</Button>
+                <input type="file" onChange={this.fileUpdated} accept="image/*" />
             </React.Fragment>
         )
     }
