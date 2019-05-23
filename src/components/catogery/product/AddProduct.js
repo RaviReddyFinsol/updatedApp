@@ -83,17 +83,18 @@ class AddProduct extends Component
                 </Select> 
                 <Select value={this.state.dietType} onChange={this.inputChanged} name="dietType">
                     <MenuItem value={""}></MenuItem>
-                    <MenuItem value={"veg"}></MenuItem>
-                    <MenuItem value={"non-veg"}></MenuItem>
+                    <MenuItem value={"veg"}>V</MenuItem>
+                    <MenuItem value={"non-veg"}>NV</MenuItem>
                 </Select> 
-                <Button>Add</Button> {" Product prices"}
+                <br/><Button>Add</Button> {"prices"}<br/>
                 <TextField label="Details" name="details" onChange={this.inputChanged} value={this.state.details} />
                 <TextField label="Ingredients" name="ingridients" onChange={this.inputChanged} value={this.state.ingridients} />
-                <TextField label="Validity" name="validity" onChange={this.inputChanged} value={this.state.validity} />
+                <TextField label="Validity" name="validity" onChange={this.inputChanged} value={this.state.validity} />                
+                <TextField label="Offer" name="offerName" onChange={this.inputChanged} value={this.state.offerName} />
                 <TextField label="Manufacture Details" name="manufactureDetails" onChange={this.inputChanged} value={this.state.manufactureDetails} />
                 <TextField label="Brand" name="brand" onChange={this.inputChanged} value={this.state.brand} />
                 <TextField label="Seller Details" name="sellerDetails" onChange={this.inputChanged} value={this.state.sellerDetails} />
-                <Button>Add</Button> {" Image"}
+                <br/><Button>Add</Button> {" Image"}
                 <br />
                 <Button type="submit" >Save</Button>
             </form>
