@@ -72,7 +72,7 @@ class AddRemedies extends Component {
         // formData.append("ingridients", this.state.remedyType);
         for (let step of this.props.steps) {
             //formData.append(`${step.stepName}_desc`, step.description);
-            formData.append(`${step.stepName}_file`, step.filePath);
+            formData.append(`image`, step.filePath);
         }
         for (let ff of formData.entries()) {
             console.log(ff[0], ff[1]);

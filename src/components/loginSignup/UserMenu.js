@@ -10,6 +10,10 @@ import { withCookies } from "react-cookie";
 import { connect } from "react-redux";
 import * as actionTypes from "../../store/actionTypes";
 import { Link } from "react-router-dom";
+// import ViewProduct from "../catogery/product/ViewProduct";
+// import ViewGroup from "../catogery/group/ViewGroup";
+// import ViewSubGroup from "../catogery/subGroup/ViewSubGroup";
+// import ViewChildGroup from "../catogery/childGroup/ViewChildGroup";
 
 const mapStateToProps = state => {
   return {
@@ -46,6 +50,10 @@ class UserMenu extends Component {
   };
   render() {
     const { open } = this.state;
+    const ViewProduct = "ViewProduct";
+    const ViewGroup = "ViewGroup";
+    const ViewSubGroup = "ViewSubGroup";
+    const ViewChildGroup = "ViewChildGroup";
     return (
       <div>
         <Button
@@ -76,12 +84,22 @@ class UserMenu extends Component {
                     <Link to={{pathname :`/userProfile/${this.props.token}`}}>
                       <MenuItem onClick={this.userProfile}>M P</MenuItem>
                     </Link>
-                    <Link to={{pathname :`/userFavourites/${this.props.token}`}}>
-                      <MenuItem onClick={this.handleClose}>Fav</MenuItem>
+                    <Link to={{pathname :`/catogery/${this.props.token}/${ViewProduct}`}}>
+                      <MenuItem onClick={this.handleClose}>P</MenuItem>
                     </Link>
-                    <Link to={{pathname :`/userRemedies/${this.props.token}`}}>
+                    <Link to={{pathname :`/catogery/${this.props.token}/${ViewGroup}`}}>
                       <MenuItem onClick={this.openRemedies}>
-                        M R
+                        G
+                      </MenuItem>
+                    </Link>
+                    <Link to={{pathname :`/catogery/${this.props.token}/${ViewSubGroup}`}}>
+                      <MenuItem onClick={this.openRemedies}>
+                        SG
+                      </MenuItem>
+                    </Link>
+                    <Link to={{pathname :`/catogery/${this.props.token}/${ViewChildGroup}`}}>
+                      <MenuItem onClick={this.openRemedies}>
+                        CG
                       </MenuItem>
                     </Link>
                     <MenuItem onClick={this.userLogout}>Logout</MenuItem>
