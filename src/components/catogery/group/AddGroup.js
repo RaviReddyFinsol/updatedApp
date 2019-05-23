@@ -31,6 +31,7 @@ class AddGroup extends Component {
 
         formData.append("groupName", this.state.groupName);
         formData.append("image", this.state.image);
+        formData.append("token",this.props.match.params.token);
 
         axios.post("http://localhost:9003/group/addGroup", formData, config)
             .then((response) => {

@@ -35,6 +35,7 @@ class ViewSubGroup extends Component {
         formData.append("subGroupName", this.state.groupName);
         formData.append("groupName", this.state.groupName);
         formData.append("image", this.state.image);
+        formData.append("token",this.props.match.params.token);
 
         axios.post("http://localhost:9003/subGroup/addSubGroup", formData, config)
             .then((response) => {
@@ -46,7 +47,7 @@ class ViewSubGroup extends Component {
     render() {
         return (
             <form onSubmit={this.saveSubGroup}>
-                <TextField label="GN" name="subGroupName" onChange={this.inputChanged} /><br />
+                <TextField label="SGN" name="subGroupName" onChange={this.inputChanged} /><br />
                 {"G"}
                 <Select value={this.state.remedyType} onChange={this.inputChanged} name="remedyType">
                     <MenuItem value={"H"}>H</MenuItem>

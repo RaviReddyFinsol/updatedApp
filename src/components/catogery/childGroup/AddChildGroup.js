@@ -26,7 +26,8 @@ class ViewChildGroup extends Component {
         event.preventDefault();
         var childGroupDetails = {
             childGroupName: this.state.childGroupName,
-            subGroupName: this.state.subGroupName
+            subGroupName: this.state.subGroupName,
+            token: this.props.match.params.token
         };
 
         axios.post("http://localhost:9003/childGroup/addChildGroup", childGroupDetails)
