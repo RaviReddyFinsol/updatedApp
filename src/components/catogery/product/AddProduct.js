@@ -1,4 +1,4 @@
-import React,{Component} from "react";
+import React, { Component } from "react";
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -6,41 +6,47 @@ import Select from '@material-ui/core/Select';
 import axios from 'axios';
 import ProductOptions from './ProductOptions';
 import ProductImage from './ProductImage';
+import { connect } from "react-redux";
+import * as actionTypes from '../../../store/actionTypes';
 
-class AddProduct extends Component
-{
+const mapStateToProps = (state) => {
+    return {
+        productTypes: state.productQtyDetails.productQtyTypes,
+        images: state.productImages.productImages
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addProductQuantityType: () => dispatch({ type: actionTypes.ADD_PRODUCT_QTY_DETAILS }),
+        addProductImage: () => dispatch({ type: actionTypes.ADD_PRODUCT_IMAGE }),
+        removeImage: () => dispatch({ type: actionTypes.REMOVE_PRODUCT_IMAGE })
+    }
+}
+
+class AddProduct extends Component {
     constructor(props) {
         super(props);
         this.state = {
             productName: "",
-            subGroup:"",
+            subGroup: "",
             childGroup: "",
             dietType: "",
             details: "",
             ingridients: "",
             healthBenifits: "",
             validity: "",
-            offerName: "",
-            manufactureDetails:"",
-            sellerDetails : "",
-            brand : "",
+            manufactureDetails: "",
+            sellerDetails: "",
+            brand: "",
         }
-    }
-
-    componentDidMount() {
-        console.log("add rem : ");
-    }
-
-    addRemedyStep = () => {
-        if (this.props.stepCounter <= 10)
-            this.props.addStep(this.props.stepCounter);
     }
 
     inputChanged = (event) => {
         this.setState({ [event.target.name]: event.target.value })
     }
 
-    saveRemedy = (event) => {
+    saveProduct = (event) => {
         event.preventDefault();
         const config = {
             headers: {
@@ -64,37 +70,51 @@ class AddProduct extends Component
             console.log(ff[0], ff[1]);
         }
 
-        axios.post("http://localhost:9003/upload",formData,config)
-        .then((response) => {
-            alert("The file is successfully uploaded");
-        }).catch((error) => {
-    });
+        axios.post("http://localhost:9003/upload", formData, config)
+            .then((response) => {
+                alert("The file is successfully uploaded");
+            }).catch((error) => {
+            });
 
     }
-    render(){
-        return(
-            <form onSubmit={this.saveRemedy}>
-                <TextField label="productName" />
+    render() {
+        return (
+            <form onSubmit={this.saveProduct}>
+                <TextField label="productName" value={this.state.productName} />
                 <Select value={this.state.subGroup} onChange={this.inputChanged} name="subGroup">
                     <MenuItem value={""}></MenuItem>
-                </Select> 
+                </Select>
                 <Select value={this.state.childGroup} onChange={this.inputChanged} name="childGroup">
                     <MenuItem value={""}></MenuItem>
-                </Select> 
+                </Select>
                 <Select value={this.state.dietType} onChange={this.inputChanged} name="dietType">
                     <MenuItem value={""}></MenuItem>
                     <MenuItem value={"veg"}>V</MenuItem>
                     <MenuItem value={"non-veg"}>NV</MenuItem>
-                </Select> 
-                <br/><Button>Add</Button> {"prices"}<br/>
+                </Select>
+                <br />
+                {
+                    this.props.productTypes ?
+                        this.props.productTypes.map(item => (
+                            <ProductOptions key={item.id} mrp={item.mrp} discount={item.discount} sellPrice={item.sellPrice} quantity={item.quantity} offer={item.offer} maxQuantity={item.maxQuantity} id={item.id} />
+                        )) : "Click Add"
+                }
+                <br /><Button onClick={this.props.addProductQuantityType}>Add Price & Quantity</Button> <br />
+                <TextField label="Brand" name="brand" onChange={this.inputChanged} value={this.state.brand} />
                 <TextField label="Details" name="details" onChange={this.inputChanged} value={this.state.details} />
                 <TextField label="Ingredients" name="ingridients" onChange={this.inputChanged} value={this.state.ingridients} />
-                <TextField label="Validity" name="validity" onChange={this.inputChanged} value={this.state.validity} />                
-                <TextField label="Offer" name="offerName" onChange={this.inputChanged} value={this.state.offerName} />
+                <TextField label="Validity" name="validity" onChange={this.inputChanged} value={this.state.validity} />
                 <TextField label="Manufacture Details" name="manufactureDetails" onChange={this.inputChanged} value={this.state.manufactureDetails} />
-                <TextField label="Brand" name="brand" onChange={this.inputChanged} value={this.state.brand} />
                 <TextField label="Seller Details" name="sellerDetails" onChange={this.inputChanged} value={this.state.sellerDetails} />
-                <br/><Button>Add</Button> {" Image"}
+                <br />
+                {
+                    this.props.images ? this.props.images.map(item => (
+                        <ProductImage key={item.id} />
+                    )) : "Click Add for Image"
+                }
+                <br />
+                <Button onClick={this.props.addProductImage}>Add Image</Button>                
+                <Button onClick={this.props.removeImage}>Remove</Button>
                 <br />
                 <Button type="submit" >Save</Button>
             </form>
@@ -102,4 +122,4 @@ class AddProduct extends Component
     }
 }
 
-export default AddProduct;
+export default connect(mapStateToProps, mapDispatchToProps)(AddProduct);

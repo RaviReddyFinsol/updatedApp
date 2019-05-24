@@ -1,10 +1,12 @@
-import React,{Component} from "react";
+import React, { Component } from "react";
 
 class ProductImage extends Component {
-  
-    render(){
-        return(
-            <input type="file"  accept="image/*" />
+
+    render() {
+        return (
+            <React.Fragment>
+                <input type="file" accept="image/*" />
+            </React.Fragment>
         );
     }
 
