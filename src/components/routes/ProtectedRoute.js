@@ -3,7 +3,7 @@ import { Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
 const ProtectedRoute = ({ component: Component, token, ...rest }) => {
-  console.log("protected : ", token);
+  //console.log("protected : ", token);
   return (
     <Route
       {...rest}
