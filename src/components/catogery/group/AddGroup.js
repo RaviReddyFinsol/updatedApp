@@ -2,13 +2,16 @@ import React, { Component } from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
+import Snackbar from '@material-ui/core/Snackbar';
 
 class AddGroup extends Component {
   constructor(props) {
     super(props);
     this.state = {
       groupName: "",
-      image: ""
+      image: "",
+      snackbarState : false,
+      snackbarMessage : ""
     };
   }
 
@@ -36,9 +39,14 @@ class AddGroup extends Component {
     axios
       .post("http://localhost:9003/api/catogery/group/add", formData, config)
       .then(response => {
-        alert("The file is successfully uploaded");
+        this.setState({snackbarState:true,snackbarMessage:response});
       })
-      .catch(error => {});
+      .catch(error => {
+        this.setState({snackbarState:true,snackbarMessage:error});
+      });
+    
+    setTimeout(() => {      
+      this.setState({snackbarState:false})},3000);
   };
 
   render() {
@@ -49,6 +57,12 @@ class AddGroup extends Component {
         <input type="file" onChange={this.fileUpdated} accept="image/*" />
         <br />
         <Button type="submit">S</Button>
+        <Snackbar message={"snack demo"} 
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        open={this.state.snackbarState} />
       </form>
     );
   }

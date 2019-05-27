@@ -8,6 +8,7 @@ import ProductOptions from "./ProductOptions";
 import ProductImage from "./ProductImage";
 import { connect } from "react-redux";
 import * as actionTypes from "../../../store/actionTypes";
+import Snackbar from '@material-ui/core/Snackbar';
 
 const mapStateToProps = state => {
   return {
@@ -77,7 +78,12 @@ class AddProduct extends Component {
         alert("The file is successfully uploaded");
       })
       .catch(error => {});
+
+      this.setState({snackbarState:true});
+      setTimeout(() => {      
+        this.setState({snackbarState:false})},2000);
   };
+
   render() {
     return (
       <form onSubmit={this.saveProduct}>
@@ -170,6 +176,12 @@ class AddProduct extends Component {
         <Button onClick={this.props.removeImage}>Remove</Button>
         <br />
         <Button type="submit">Save</Button>
+        <Snackbar message={"snack demo"} 
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        open={this.state.snackbarState} />
       </form>
     );
   }

@@ -3,7 +3,7 @@ import { Switch, Route,Redirect,Link } from "react-router-dom";
 import AddProduct from './product/AddProduct';
 import ViewProduct from './product/ViewProduct';
 import AddGroup from './group/AddGroup';
-import ViewGroup from './group/ViewGroup';
+import ViewAllGroups from './group/ViewAllGroups';
 import AddSubGroup from './subGroup/AddSubGroup';
 import ViewSubGroup from './subGroup/ViewSubGroup';
 import AddChildGroup from './childGroup/AddChildGroup';
@@ -28,7 +28,7 @@ class Catogery extends Component {
            case "ViewGroup": {
              routeComponent = AddGroup;
              addLinkName = "Add Group";
-             viewLinkName = "View Group";
+             viewLinkName = "View Groups";
              break;
            }
            case "ViewSubGroup": { 
@@ -60,8 +60,8 @@ class Catogery extends Component {
             break;
           }
           case "ViewGroup": {
-            routeComponent = ViewGroup;
-            viewLinkName = "View Group";
+            routeComponent = ViewAllGroups;
+            viewLinkName = "View Groups";
             addLinkName = "Add Group";
             break; 
           }

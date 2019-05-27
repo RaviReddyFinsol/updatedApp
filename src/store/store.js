@@ -5,14 +5,22 @@ import { combineReducers } from "redux";
 import remedyStepReducer from './reducers/remedyStepReducer';
 import productQtyDetailsReducer from './reducers/productQtyDetailsReducer';
 import productImageReducer from './reducers/productImageReducer';
+import productReducer from './reducers/productReducer';
+import groupReducer from './reducers/groupReducer';
+import subGroupReducer from './reducers/subGroupReducer';
+import childGroupReducer from './reducers/childGroupReducer';
 
 const store = createStore(
   combineReducers({
-    auth: authReducer,
-    dialog: loginDialogReducer,
-    remedyStep:remedyStepReducer,
-    productQtyDetails:productQtyDetailsReducer,
-    productImages:productImageReducer
+    auth : authReducer,
+    dialog : loginDialogReducer,
+    remedyStep : remedyStepReducer,
+    productQtyDetails : productQtyDetailsReducer,
+    productImages : productImageReducer,
+    products : productReducer,
+    groups : groupReducer,
+    subGroups : subGroupReducer,
+    childGroups : childGroupReducer
   })
 );
 

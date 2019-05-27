@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button';
 import axios from 'axios';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
+import Snackbar from '@material-ui/core/Snackbar';
 
 class ViewChildGroup extends Component {
     constructor(props) {
@@ -36,7 +37,11 @@ class ViewChildGroup extends Component {
             }).catch((error) => {
             });
 
+            this.setState({snackbarState:true});
+            setTimeout(() => {      
+              this.setState({snackbarState:false})},2000);
     }
+
     render() {
         return (
             <form onSubmit={this.saveChildGroup}>
@@ -47,6 +52,12 @@ class ViewChildGroup extends Component {
                     <MenuItem value={"B"}>B</MenuItem>
                 </Select>
                 <Button type="submit">S</Button>
+                <Snackbar message={"snack demo"} 
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        open={this.state.snackbarState} />
             </form>
         )
     }

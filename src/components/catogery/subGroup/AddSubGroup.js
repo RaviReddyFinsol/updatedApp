@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button';
 import axios from 'axios';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
+import Snackbar from '@material-ui/core/Snackbar';
 
 class ViewSubGroup extends Component {
     constructor(props) {
@@ -43,7 +44,11 @@ class ViewSubGroup extends Component {
             }).catch((error) => {
             });
 
+            this.setState({snackbarState:true});
+            setTimeout(() => {      
+              this.setState({snackbarState:false})},2000);
     }
+
     render() {
         return (
             <form onSubmit={this.saveSubGroup}>
@@ -55,6 +60,12 @@ class ViewSubGroup extends Component {
                 </Select>
                 <input type="file" onChange={this.fileUpdated} accept="image/*" /><br />
                 <Button type="submit">S</Button>
+                <Snackbar message={"snack demo"} 
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        open={this.state.snackbarState} />
             </form>
         )
     }
