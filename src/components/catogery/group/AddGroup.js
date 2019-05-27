@@ -10,8 +10,8 @@ class AddGroup extends Component {
     this.state = {
       groupName: "",
       image: "",
-      snackbarState : false,
-      snackbarMessage : ""
+      snackbarState: false,
+      snackbarMessage: ""
     };
   }
 
@@ -39,14 +39,15 @@ class AddGroup extends Component {
     axios
       .post("http://localhost:9003/api/catogery/group/add", formData, config)
       .then(response => {
-        this.setState({snackbarState:true,snackbarMessage:response});
+        this.setState({ snackbarState: true, snackbarMessage: response });
       })
       .catch(error => {
-        this.setState({snackbarState:true,snackbarMessage:error});
+        this.setState({ snackbarState: true, snackbarMessage: error });
       });
-    
-    setTimeout(() => {      
-      this.setState({snackbarState:false})},3000);
+
+    setTimeout(() => {
+      this.setState({ snackbarState: false })
+    }, 3000);
   };
 
   render() {
@@ -57,12 +58,12 @@ class AddGroup extends Component {
         <input type="file" onChange={this.fileUpdated} accept="image/*" />
         <br />
         <Button type="submit">S</Button>
-        <Snackbar message={"snack demo"} 
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        open={this.state.snackbarState} />
+        <Snackbar message={"snack demo"}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center',
+          }}
+          open={this.state.snackbarState} />
       </form>
     );
   }

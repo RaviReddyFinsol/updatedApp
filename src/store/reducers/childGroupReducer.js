@@ -1,21 +1,21 @@
 import * as actionTypes from '../actionTypes';
 
 const initialState = {
-    childGroups : []
+    childGroups: []
 }
 
-export default function childReducer(state=initialState,action){
-    switch(action.type){
-        case actionTypes.ADD_CHILDGROUP : {
+export default function childReducer(state = initialState, action) {
+    switch (action.type) {
+        case actionTypes.ADD_CHILDGROUP: {
             return state;
         }
-        case actionTypes.UPDATE_CHILDGROUP : {
+        case actionTypes.UPDATE_CHILDGROUP: {
             return state;
         }
-        case actionTypes.DELETE_CHILDGROUP : {
+        case actionTypes.DELETE_CHILDGROUP: {
             return state;
         }
-        default : {return state}
+        default: { return state }
     }
-    
+
 }
