@@ -26,7 +26,6 @@ class App extends Component {
     setCookie(this.props.cookies,6);
     //this.props.cookies.remove("NR_Token",{path:'/'});
     var token = getCookie(this.props.cookies);
-    console.log("App will mount ", token);
     if (token !== undefined) {
       this.props.userLogin(token);
     }
@@ -34,20 +33,7 @@ class App extends Component {
     // this.props.userLogin(15);
   }
 
-  componentDidMount() {
-    console.log("App did mount ", this.props.token);
-  }
-
-  componentDidUpdate() {
-    console.log("App did update ", this.props.token);
-  }
-
-  componentWillUpdate() {
-    console.log("App will update ", this.props.token);
-  }
-
   render() {
-    console.log("App render: ", this.props.token);
     return (
       <div className="App">
          <Header />

@@ -6,6 +6,9 @@ const initialState = {
 
 export default function groupReducer(state=initialState,action){
     switch(action.type){
+        case actionTypes.GET_GROUP : {
+            return state;
+        }
         case actionTypes.ADD_GROUP : {
             return state;
         }

@@ -25,23 +25,8 @@ const mapDispatchToProps = dispatch => {
 };
 
 class Header extends Component {
-  componentWillMount() {
-    console.log("header will: ", this.props.token,this.props.isDialogOpened);
-  }
-  componentDidMount() {
-    console.log("header did mount ", this.props.token);
-  }
-
-  componentDidUpdate() {
-    console.log("header did update ", this.props.token);
-  }
-
-  componentWillUpdate() {
-    console.log("header will update ", this.props.token);
-  }
-
+  
   render() {
-    console.log("header render: ", this.props.token);
     return (
       <AppBar className="flex-container">
         <Toolbar>

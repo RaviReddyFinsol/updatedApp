@@ -1,19 +1,19 @@
 import React,{Component} from "react";
 import { Switch, Route,Redirect,Link } from "react-router-dom";
 import AddProduct from './product/AddProduct';
-import ViewProduct from './product/ViewProduct';
+import ViewAllProducts from './product/ViewAllProducts';
 import AddGroup from './group/AddGroup';
 import ViewAllGroups from './group/ViewAllGroups';
 import AddSubGroup from './subGroup/AddSubGroup';
-import ViewSubGroup from './subGroup/ViewSubGroup';
+import ViewAllSubGroups from './subGroup/ViewAllSubGroups';
 import AddChildGroup from './childGroup/AddChildGroup';
-import ViewChildGroup from './childGroup/ViewChildGroup';
+import ViewAllChildGroups from './childGroup/ViewAllChildGroups';
 
 var istokenValid = false;
 
 class Catogery extends Component {
     render(){
-      let routeComponent = ViewProduct;
+      let routeComponent = ViewAllProducts;
       let viewLinkName = "View Product";
       let addLinkName = "Add Product";
       if(this.props.location.pathname.includes("/add"))
@@ -54,7 +54,7 @@ class Catogery extends Component {
       {
         switch(this.props.match.params.page){
           case "ViewProduct": {
-            routeComponent = ViewProduct;
+            routeComponent = ViewAllProducts;
             viewLinkName = "View Product";
             addLinkName = "Add Product";
             break;
@@ -66,19 +66,19 @@ class Catogery extends Component {
             break; 
           }
           case "ViewSubGroup": {
-            routeComponent = ViewSubGroup;
+            routeComponent = ViewAllSubGroups;
             viewLinkName = "View Sub-Group";
             addLinkName = "Add Sub-Group";
             break;
           }
           case "ViewChildGroup": {
-            routeComponent = ViewChildGroup;
+            routeComponent = ViewAllChildGroups;
             viewLinkName = "View Child Group"; 
             addLinkName = "Add Child Group";
             break;
           }
           default : {
-            routeComponent = ViewProduct;
+            routeComponent = ViewAllProducts;
             viewLinkName = "View Product";
             addLinkName = "Add Product";
           }
@@ -86,7 +86,6 @@ class Catogery extends Component {
       }
         return(
             istokenValid === true ? <Redirect to={{pathname:"/"}}/> : (
-                <div>                
                   <div className="row">
                     <div className="colum">
                       <Link to={{ pathname: `/catogery/${this.props.match.params.token}/${this.props.match.params.page}` }}>{viewLinkName}</Link>   {" "}                   
@@ -96,10 +95,9 @@ class Catogery extends Component {
                       <Switch>
                         <Route exact path='/catogery/:token/:page' component={routeComponent} />
                         <Route path='/catogery/:token/:page/add' component={routeComponent} />
-                        <Route path="*" component={ViewProduct} />
+                        <Route path="*" component={ViewAllProducts} />
                       </Switch>
                     </div>
-                  </div>
                 </div>)
         );        
     }

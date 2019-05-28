@@ -8,15 +8,18 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import EditGroup from '../group/EditGroup';
+import {Route,Switch,Link} from "react-router-dom";
 
 class ViewGroup extends Component {
 
   render() {
     return (
+      <div>      
       <Card>
         <CardActionArea>
           <CardMedia
-            image="https://www.pexels.com/photo/scenic-view-of-beach-248797/" />
+            image={this.props.imagePath} />
           <CardContent>
             <Typography variant="body2" color="textSecondary" component="p">
               {this.props.groupName}
@@ -28,7 +31,9 @@ class ViewGroup extends Component {
             (
               <CardActions>
                 <Button size="small" color="primary">
-                  <EditIcon />
+                  <Link to={{pathname:`/catogery/`}}>
+                   <EditIcon />
+                  </Link>
                 </Button>
                 <Button size="small" color="primary">
                   <DeleteIcon />
@@ -37,6 +42,12 @@ class ViewGroup extends Component {
             ) : ""}
 
       </Card>
+      <div className="colum">
+                      <Switch>
+                        <Route path='/catogery/:token/:page/edit/:id' component={EditGroup} />                        
+                      </Switch>
+                    </div>
+      </div>
     )
   }
 }
