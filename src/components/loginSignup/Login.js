@@ -44,6 +44,7 @@ class Login extends Component {
           this.props.userLogin(val.data.token);
         } else {
           this.setState({ signupError: val.message });
+          this.props.closeDialog();
         }
       })
       .catch(err => {
