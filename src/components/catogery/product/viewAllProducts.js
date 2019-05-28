@@ -13,7 +13,7 @@ class ViewAllProducts extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            notification: "No Group exists,Please add one "
+            notification: "No Product exists,Please add one "
         }
     }
 

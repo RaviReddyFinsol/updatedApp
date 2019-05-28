@@ -13,7 +13,7 @@ class ViewAllSubGroups extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            notification: "No Group exists,Please add one "
+            notification: "No Sub-Group exists,Please add one "
         }
     }
 

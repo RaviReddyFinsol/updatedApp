@@ -1,4 +1,4 @@
-import { createStore } from "redux";
+import { createStore, applyMiddleware } from "redux";
 import authReducer from "./reducers/auth";
 import loginDialogReducer from "./reducers/loginDialogReducer";
 import { combineReducers } from "redux";
@@ -9,6 +9,7 @@ import productReducer from './reducers/productReducer';
 import groupReducer from './reducers/groupReducer';
 import subGroupReducer from './reducers/subGroupReducer';
 import childGroupReducer from './reducers/childGroupReducer';
+import thunk from "redux-thunk";
 
 const store = createStore(
   combineReducers({
@@ -21,7 +22,7 @@ const store = createStore(
     groups : groupReducer,
     subGroups : subGroupReducer,
     childGroups : childGroupReducer
-  })
+  }), applyMiddleware(thunk)
 );
 
 export default store;

@@ -2,7 +2,7 @@ import * as actionTypes from './actionTypes';
 
 export function getGroups(){
     return function(dispatch){
-        return fetch("")
+        return fetch("https://jsonplaceholder.typicode.com/posts")
         .then(response => response.json())
         .then(json => {
             dispatch({type:actionTypes.GET_GROUP,val:json});
@@ -12,7 +12,7 @@ export function getGroups(){
 
 export function getSubGroups(){
     return function(dispatch){
-        return fetch("")
+        return fetch("https://jsonplaceholder.typicode.com/posts")
         .then(response => response.json())
         .then(json => {
             dispatch({type:actionTypes.GET_SUBGROUP,val:json});
@@ -22,7 +22,7 @@ export function getSubGroups(){
 
 export function getChildGroups(){
     return function(dispatch){
-        return fetch("")
+        return fetch("https://jsonplaceholder.typicode.com/posts")
         .then(response => response.json())
         .then(json => {
             dispatch({type:actionTypes.GET_CHILDGROUP,val:json});
@@ -32,7 +32,7 @@ export function getChildGroups(){
 
 export function getProducts(){
     return function(dispatch){
-        return fetch("")
+        return fetch("https://jsonplaceholder.typicode.com/posts")
         .then(response => response.json())
         .then(json => {
             dispatch({type:actionTypes.GET_PRODUCT,val:json});
