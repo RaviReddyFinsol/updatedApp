@@ -84,7 +84,7 @@ class AddGroup extends Component {
           value={this.state.groupName}
         />
         <br />
-        <img src={this.state.imageURL} alt={"Group icon preview"} />
+        <img src={this.state.imageURL} alt={""} />
         <br />
         <input type="file" onChange={this.fileUpdated} accept="image/*" />
         <br />

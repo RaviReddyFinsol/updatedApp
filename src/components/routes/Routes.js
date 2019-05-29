@@ -11,7 +11,7 @@ export default function Routes() {
     <Switch>
       <Route exact path="/" component={Home} />
       <ProtectedRoute path="/userProfile/:token" component={Profile} token={1} />
-      <ProtectedRoute path="/catogery/:token/:page" component={Catogery} token={1} />
+      <Route path="/catogery/:token/:page" component={Catogery} />
       <ProtectedRoute path="/userFavourites/:token" component={Favourites} token={1} />
       <Route path="*" component={Home} />
     </Switch>

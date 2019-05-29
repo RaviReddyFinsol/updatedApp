@@ -13,12 +13,12 @@ class ViewAllSubGroups extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            notification: "No Sub-Group exists,Please add one "
+            notification: "No Sub-Group exists,Please add one"
         }
     }
 
     componentDidMount() {
-        this.props.getSubGroups();
+        //this.props.getSubGroups();
     }
 
     render() {

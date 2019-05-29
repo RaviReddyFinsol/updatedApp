@@ -18,7 +18,7 @@ class ViewAllChildGroups extends Component {
   }
 
   componentDidMount() {
-    this.props.getChildGroups();
+    //this.props.getChildGroups();
   }
 
   render() {

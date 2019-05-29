@@ -13,22 +13,26 @@ class ViewAllGroups extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      notification: "No Group exists,Please add one "
+      groups : [{"id" : "2","groupName" : "one","isEditable" : "true"},
+      {"id" : "3","groupName" : "two","isEditable" : "false"},
+      {"id" : "4","groupName" : "three","isEditable" : "true"}],
+      notification: "No Group exists,Please add one"
     };
   }
 
   componentDidMount() {
-    var token = {
-      token: this.props.match.params.token
-    };
-    this.props.getGroups(token);
+    // var token = {
+    //   token: this.props.match.params.token
+    // };
+    //this.props.getGroups(token);
   }
 
   render() {
+    console.log(this.state.groups);
     return (
       <div>
-        {this.props.groups.length !== 0 ? (
-          this.props.groups.map(group => (
+        {this.state.groups.length !== 0 ? (
+          this.state.groups.map(group => (
             <ViewGroup
               key={group.id}
               imagePath={group.imagePath}

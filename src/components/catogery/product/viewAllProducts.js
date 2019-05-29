@@ -18,8 +18,7 @@ class ViewAllProducts extends Component {
     }
 
     componentDidMount() {
-        console.log("pro");
-        this.props.getProducts();
+        //this.props.getProducts();
     }
 
     render() {
