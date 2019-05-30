@@ -6,7 +6,7 @@ import { withCookies } from "react-cookie";
 import { getCookie, setCookie } from "./cookies/cookie";
 import { connect } from "react-redux";
 import * as actionTypes from "./store/actionTypes";
-import CatogeryMenu from './components/catogery/CatogeryMenu';
+import CatogeryMenu from "./components/catogery/CatogeryMenu";
 
 const mapStateToProps = state => {
   return {
@@ -23,11 +23,11 @@ const mapDispatchToProps = dispatch => {
 
 class App extends Component {
   componentWillMount() {
-    setCookie(this.props.cookies, 10);
+    //setCookie(this.props.cookies, 10);
     var token = getCookie(this.props.cookies);
     if (token !== undefined) {
       this.props.userLogin(token);
-      //setCookie(this.props.cookies, token);
+      setCookie(this.props.cookies, token);
     }
   }
 
