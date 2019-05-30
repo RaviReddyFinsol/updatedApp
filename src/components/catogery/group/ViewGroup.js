@@ -36,7 +36,7 @@ class ViewGroup extends Component {
               </Button>
             </CardActions>
           ) : (
-            ""
+            <p>Added by other User</p>
           )}
         </Card>
         <div className="colum">
