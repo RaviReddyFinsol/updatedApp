@@ -1,14 +1,18 @@
 import React, { Component } from "react";
 import { Switch, Route, Link } from "react-router-dom";
-import AddProduct from './product/AddProduct';
-import ViewAllProducts from './product/ViewAllProducts';
-import AddGroup from './group/AddGroup';
-import ViewAllGroups from './group/ViewAllGroups';
-import AddSubGroup from './subGroup/AddSubGroup';
-import ViewAllSubGroups from './subGroup/ViewAllSubGroups';
-import AddChildGroup from './childGroup/AddChildGroup';
-import ViewAllChildGroups from './childGroup/ViewAllChildGroups';
+import AddProduct from "./product/AddProduct";
+import ViewAllProducts from "./product/ViewAllProducts";
+import AddGroup from "./group/AddGroup";
+import ViewAllGroups from "./group/ViewAllGroups";
+import AddSubGroup from "./subGroup/AddSubGroup";
+import ViewAllSubGroups from "./subGroup/ViewAllSubGroups";
+import AddChildGroup from "./childGroup/AddChildGroup";
+import ViewAllChildGroups from "./childGroup/ViewAllChildGroups";
 import ProtectedRoute from "../routes/ProtectedRoute";
+import EditGroup from "./group/EditGroup";
+import EditSubGroup from "./subGroup/EditSubGroup";
+import EditChildGroup from "./childGroup/EditChildGroup";
+import EditProduct from "./product/EditProduct";
 import { connect } from "react-redux";
 
 const mapStateToProps = state => {
@@ -22,7 +26,44 @@ class Catogery extends Component {
     let routeComponent = ViewAllProducts;
     let viewLinkName = "View Product";
     let addLinkName = "Add Product";
-    if (this.props.location.pathname.includes("/add")) {
+    let editPageName = "";
+    if (this.props.location.pathname.includes("/edit")) {
+      switch (this.props.match.params.page) {
+        case "ViewProduct": {
+          routeComponent = EditProduct;
+          editPageName = "Edit Product";
+          viewLinkName = "View Product";
+          addLinkName = "Add Product";
+          break;
+        }
+        case "ViewGroup": {
+          routeComponent = EditGroup;
+          editPageName = "Edit Group";
+          viewLinkName = "View Groups";
+          addLinkName = "Add Group";
+          break;
+        }
+        case "ViewSubGroup": {
+          routeComponent = EditSubGroup;
+          editPageName = "Edit Sub-Group";
+          viewLinkName = "View Sub-Group";
+          addLinkName = "Add Sub-Group";
+          break;
+        }
+        case "ViewChildGroup": {
+          editPageName = EditChildGroup;
+          viewLinkName = "Edit Child Group";
+          viewLinkName = "View Child Group";
+          addLinkName = "Add Child Group";
+          break;
+        }
+        default: {
+          routeComponent = ViewAllProducts;
+          editPageName = "Add Product";
+          viewLinkName = "View Product";
+        }
+      }
+    } else if (this.props.location.pathname.includes("/add")) {
       switch (this.props.match.params.page) {
         case "ViewProduct": {
           routeComponent = AddProduct;
@@ -54,8 +95,7 @@ class Catogery extends Component {
           viewLinkName = "View Product";
         }
       }
-    }
-    else {
+    } else {
       switch (this.props.match.params.page) {
         case "ViewProduct": {
           routeComponent = ViewAllProducts;
@@ -90,18 +130,59 @@ class Catogery extends Component {
     }
     return (
       <div className="row">
-        {
-          this.props.token !== undefined ? (
-            <div className="colum">
-          <Link to={{ pathname: `/catogery/${this.props.match.params.token}/${this.props.match.params.page}` }}>{viewLinkName}</Link>   {" "}
-          <Link to={{ pathname: `/catogery/${this.props.match.params.token}/${this.props.match.params.page}/add` }}>{addLinkName}</Link>
+        {this.props.token !== undefined ? (
+          <div className="colum">
+            <Link
+              to={{
+                pathname: `/catogery/${this.props.match.params.token}/${
+                  this.props.match.params.page
+                }`
+              }}
+            >
+              {viewLinkName}
+            </Link>{" "}
+            <Link
+              to={{
+                pathname: `/catogery/${this.props.match.params.token}/${
+                  this.props.match.params.page
+                }/add`
+              }}
+            >
+              {addLinkName}
+            </Link>
           </div>
-          ) : ""
-        }      
+        ) : (
+          ""
+        )}
+        {editPageName !== "" ? (
+          <p
+            style={{
+              color: "Green",
+              fontFamily: "Bold"
+            }}
+          >
+            {editPageName}
+          </p>
+        ) : (
+          ""
+        )}
         <div className="colum">
           <Switch>
-            <Route exact path='/catogery/:token/:page' component={routeComponent} />
-            <ProtectedRoute path='/catogery/:token/:page/add' component={routeComponent} token={1} />
+            <Route
+              exact
+              path="/catogery/:token/:page"
+              component={routeComponent}
+            />
+            <ProtectedRoute
+              path="/catogery/:token/:page/edit/:id"
+              component={routeComponent}
+              token={1}
+            />
+            <ProtectedRoute
+              path="/catogery/:token/:page/add"
+              component={routeComponent}
+              token={1}
+            />
             <Route path="*" component={ViewAllProducts} />
           </Switch>
         </div>

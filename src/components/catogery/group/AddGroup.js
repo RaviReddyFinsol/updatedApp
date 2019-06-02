@@ -58,8 +58,8 @@ class AddGroup extends Component {
       .post("http://localhost:9003/api/catogery/group/add", formData, config)
       .then(response => {
         this.setState({
-          snackbarState: true,
-          snackbarMessage: response.message
+          snackbarMessage: "Group added successfully",
+          snackbarState: true
         });
       })
       .catch(error => {

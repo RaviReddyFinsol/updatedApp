@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ViewSubGroup from "./ViewSubGroup";
 import { connect } from "react-redux";
-import { getSubGroups } from "../../../store/actionCreators";
+import { getSubGroups } from "../../../store/actionCreactors/subGroupActions";
 
 const mapStateToProps = state => {
   return {

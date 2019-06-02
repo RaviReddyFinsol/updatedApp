@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ViewGroup from "./ViewGroup";
 import { connect } from "react-redux";
-import { getGroups } from "../../../store/actionCreators";
+import { getGroups } from "../../../store/actionCreactors/groupActions";
 import Grid from "@material-ui/core/Grid";
 
 const mapStateToProps = state => {
@@ -26,7 +26,7 @@ class ViewAllGroups extends Component {
   render() {
     return (
       <div>
-        <Grid container spacing={24}>
+        <Grid container spacing={8}>
           {this.props.groups.length !== 0 ? (
             this.props.groups.map(group => (
               <Grid item xs={6} sm={4} key={group._id}>
@@ -35,6 +35,8 @@ class ViewAllGroups extends Component {
                   imagePath={group.imagePath}
                   groupName={group.groupName}
                   isEditable={group.isEditable}
+                  id={group._id}
+                  token={this.props.token}
                 />
               </Grid>
             ))

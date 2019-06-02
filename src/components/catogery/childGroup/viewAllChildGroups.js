@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ViewChildGroup from "./ViewChildGroup";
 import { connect } from "react-redux";
-import { getChildGroups } from "../../../store/actionCreators";
+import { getChildGroups } from "../../../store/actionCreactors/childGroupActions";
 
 const mapStateToProps = state => {
   return {
