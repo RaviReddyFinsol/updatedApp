@@ -53,7 +53,7 @@ class ViewGroup extends Component {
             </Button>
           </CardActions>
         ) : (
-          <p>Added by other User</p>
+          <p>" "</p>
         )}
       </Card>
     );
