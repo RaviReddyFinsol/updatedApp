@@ -32,6 +32,7 @@ class AddProduct extends Component {
     this.state = {
       productName: "",
       subGroup: "",
+      childGroups : [],
       childGroup: "",
       dietType: "",
       brand: "",
@@ -40,9 +41,20 @@ class AddProduct extends Component {
       healthBenifits: "",
       validity: "",
       manufactureDetails: "",
-      sellerDetails: ""
+      sellerDetails: "",
+      snackbarState : false,
+      snackbarMessage : ""
     };
   }
+
+ componentDidMount(){
+
+ }
+
+ subGroupChanged = event => {
+  this.setState({ [event.target.name]: event.target.value });
+  axios.get().then()
+ }
 
   inputChanged = event => {
     this.setState({ [event.target.name]: event.target.value });
@@ -176,7 +188,7 @@ class AddProduct extends Component {
         <Button onClick={this.props.removeImage}>Remove</Button>
         <br />
         <Button type="submit">Save</Button>
-        <Snackbar message={"snack demo"} 
+        <Snackbar message={this.state.snackbarMessage} 
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'center',

@@ -27,10 +27,12 @@ class ViewAllProducts extends Component {
         {this.props.products.length !== 0 ? (
           this.props.products.map(product => (
             <ViewProduct
-              key={product.id}
+              key={product._id}
               imagePath={product.imagePath}
               productName={product.productName}
               isEditable={product.isEditable}
+              quantityDetails={product.quantityDetails}
+              id={product._id}
             />
           ))
         ) : (

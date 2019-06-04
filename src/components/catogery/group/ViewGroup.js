@@ -53,7 +53,7 @@ class ViewGroup extends Component {
             </Button>
           </CardActions>
         ) : (
-          <p>" "</p>
+          <p>{" "}</p>
         )}
       </Card>
     );
