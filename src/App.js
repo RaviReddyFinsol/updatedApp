@@ -23,11 +23,11 @@ const mapDispatchToProps = dispatch => {
 
 class App extends Component {
   componentWillMount() {
-    setCookie(this.props.cookies, 10);
+    //setCookie(this.props.cookies, 10);
     var token = getCookie(this.props.cookies);
     if (token !== undefined) {
       this.props.userLogin(token);
-      //setCookie(this.props.cookies, token);
+      setCookie(this.props.cookies, token);
     }
   }
 

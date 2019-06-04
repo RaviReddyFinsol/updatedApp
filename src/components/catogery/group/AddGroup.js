@@ -55,7 +55,7 @@ class AddGroup extends Component {
     formData.append("token", this.props.match.params.token);
 
     axios
-      .post("http://localhost:9003/api/catogery/group/add", formData, config)
+      .post("http://localhost:9003/api/groups/group/add", formData, config)
       .then(response => {
         this.setState({
           snackbarMessage: "Group added successfully",

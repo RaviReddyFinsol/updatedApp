@@ -58,12 +58,12 @@ class EditGroup extends Component {
 
     const formData = new FormData();
     formData.append("groupName", this.state.groupName);
-    formData.append("image", this.state.image);
     formData.append("userID", this.props.match.params.token);
     formData.append("groupID", this.props.match.params.id);
+    formData.append("image", this.state.image);
 
     axios
-      .post("http://localhost:9003/api/catogery/group/edit", formData, config)
+      .post("http://localhost:9003/api/groups/group/edit", formData, config)
       .then(response => {
         this.setState({
           snackbarMessage: "Group updated successfully",
@@ -88,7 +88,7 @@ class EditGroup extends Component {
     );
     if (editGroup === undefined) {
       axios
-        .get("http://localhost:9003/api/catogery/group", {
+        .get("http://localhost:9003/api/groups/group", {
           params: {
             token: this.props.match.params.token,
             groupID: this.props.match.params.id

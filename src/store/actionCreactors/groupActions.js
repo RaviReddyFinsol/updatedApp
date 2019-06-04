@@ -4,7 +4,7 @@ import axois from "axios";
 export function getGroups(token) {
   return function(dispatch) {
     return axois
-      .get("http://localhost:9003/api/catogery/groups", {
+      .get("http://localhost:9003/api/groups/groups", {
         params: { token: token }
       })
       .then(response => {
