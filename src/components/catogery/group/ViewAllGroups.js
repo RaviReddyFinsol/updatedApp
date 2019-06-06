@@ -3,6 +3,7 @@ import ViewGroup from "./ViewGroup";
 import { connect } from "react-redux";
 import { getGroups } from "../../../store/actionCreactors/groupActions";
 import Grid from "@material-ui/core/Grid";
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const mapStateToProps = state => {
   return {
@@ -15,17 +16,23 @@ class ViewAllGroups extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isLoading : false,
       notification: "No Group exists,Please add one"
     };
   }
 
   componentDidMount() {
-    this.props.getGroups(this.props.token);
+    this.setState({isLoading : true},() => {
+      this.props.getGroups(this.props.token);
+    });
+    
+    this.setState({isLoading : false});
   }
 
   render() {
     return (
       <div>
+        { this.state.isLoading ? (<CircularProgress />) : (
         <Grid container spacing={8}>
           {this.props.groups.length !== 0 ? (
             this.props.groups.map(group => (
@@ -43,7 +50,8 @@ class ViewAllGroups extends Component {
           ) : (
             <h2> {this.state.notification}</h2>
           )}
-        </Grid>
+        </Grid>)
+        }
       </div>
     );
   }

@@ -24,12 +24,11 @@ class ViewProduct extends Component {
             <Typography variant="body2" color="textPrimary" component="p" align="left">
             {primaryProduct.quantity}
             </Typography>
-            <Typography variant="body2" color="textPrimary" component="p" align="left">
-            {primaryProduct.sellingPrice}
+            <Typography variant="body2" color="textPrimary" component="p" align="left" >
+             &#x20b9; {primaryProduct.sellingPrice} {" "}
             </Typography>
-            <Typography variant="overline" color="textSecondary" component="p" align="left">
-                <strike>
-
+            <Typography variant="overline" color="textSecondary" component="p" align="left" >
+                <strike color="textSecondary">
             {primaryProduct.mrp}
                 </strike>
             </Typography>
