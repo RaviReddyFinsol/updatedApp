@@ -58,19 +58,31 @@ class EditGroup extends Component {
 
     const formData = new FormData();
     formData.append("groupName", this.state.groupName);
-    formData.append("userID", this.props.match.params.token);
-    formData.append("groupID", this.props.match.params.id);
+    //formData.append("userID", this.props.match.params.token);
+    //formData.append("groupID", this.props.match.params.id);
     formData.append("image", this.state.image);
 
     axios
-      .post("http://localhost:9003/api/groups/group/edit", formData, config)
+      .put(
+        "http://localhost:9003/api/groups",
+        formData,
+        {
+          params: {
+            userID: this.props.match.params.token,
+            groupID: this.props.match.params.id
+          }
+        },
+        config
+      )
       .then(response => {
+        console.log(response);
         this.setState({
           snackbarMessage: "Group updated successfully",
           snackbarState: true
         });
       })
       .catch(error => {
+        console.log(error);
         this.setState({
           snackbarState: true,
           snackbarMessage: "Something went wrong.Try again after some time"
@@ -90,19 +102,18 @@ class EditGroup extends Component {
       axios
         .get("http://localhost:9003/api/groups/group", {
           params: {
-            token: this.props.match.params.token,
+            userID: this.props.match.params.token,
             groupID: this.props.match.params.id
           }
         })
         .then(response => {
           this.setState({
-            groupName: response.data.data.groupName,
-            imageURL: response.data.data.imagePath
+            groupName: response.data.group.groupName,
+            imageURL: response.data.group.imagePath
           });
         })
         .catch(error => {});
-    }
-    if (editGroup !== undefined) {
+    } else {
       this.setState({
         groupName: editGroup.groupName,
         imageURL: editGroup.imagePath

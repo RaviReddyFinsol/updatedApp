@@ -3,14 +3,14 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
 import Snackbar from "@material-ui/core/Snackbar";
-import CircularProgress from '@material-ui/core/CircularProgress';
+import CircularProgress from "@material-ui/core/CircularProgress";
 //import LineDots from '../../loadingIndicators/LineDots';
 
 class AddGroup extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading : false,
+      isLoading: false,
       groupName: "",
       image: "",
       imageURL: "",
@@ -46,54 +46,55 @@ class AddGroup extends Component {
 
   saveGroup = event => {
     event.preventDefault();
-    this.setState({isLoading : true}, () => {
+    this.setState({ isLoading: true }, () => {
+      const config = {
+        headers: {
+          "content-type": "multipart/form-data"
+        }
+      };
 
-    
-    const config = {
-      headers: {
-        "content-type": "multipart/form-data"
-      }
-    };
+      const formData = new FormData();
+      formData.append("groupName", this.state.groupName);
+      formData.append("image", this.state.image);
+      //formData.append("token", this.props.match.params.token);
 
-    const formData = new FormData();
-    formData.append("groupName", this.state.groupName);
-    formData.append("image", this.state.image);
-    formData.append("token", this.props.match.params.token);
-
-    axios
-      .post("http://localhost:9003/api/groups/group/add", formData, config)
-      .then(response => {
-        this.setState({
-          snackbarMessage: response.data.message,
-          snackbarState: true,
-          isLoading : false
+      axios
+        .post(
+          "http://localhost:9003/api/groups",
+          formData,
+          { params: { userID: this.props.match.params.token } },
+          config
+        )
+        .then(response => {
+          this.setState({
+            snackbarMessage: response.data.message,
+            snackbarState: true,
+            isLoading: false
+          });
+          setTimeout(() => {
+            this.setState({ snackbarState: false });
+          }, 3000);
+        })
+        .catch(error => {
+          this.setState({
+            snackbarMessage: "Something went wrong.Try again after some time",
+            snackbarState: true,
+            isLoading: false
+          });
+          setTimeout(() => {
+            this.setState({ snackbarState: false });
+          }, 3000);
         });
-        setTimeout(() => {
-          this.setState({ snackbarState: false });
-        }, 3000);
-      })
-      .catch(error => {
-        this.setState({
-          snackbarMessage: "Something went wrong.Try again after some time",snackbarState: true,isLoading: false
-        });
-        setTimeout(() => {
-          this.setState({ snackbarState: false });
-        }, 3000);
-      });
     });
-
   };
 
   render() {
     return (
       <React.Fragment>
-       {
-         this.state.isLoading ? (
+        {this.state.isLoading ? (
           <CircularProgress />
-         )
-          :
-           (
-            <form onSubmit={this.saveGroup}>
+        ) : (
+          <form onSubmit={this.saveGroup}>
             <TextField
               label="GN"
               name="groupName"
@@ -115,10 +116,8 @@ class AddGroup extends Component {
               open={this.state.snackbarState}
             />
           </form>
-         
-       )
-      } 
-     </React.Fragment>
+        )}
+      </React.Fragment>
     );
   }
 }

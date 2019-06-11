@@ -14,8 +14,8 @@ import axios from "axios";
 class ViewGroup extends Component {
   deleteGroup = event => {
     axios
-      .delete("http://localhost:9003/api/groups/group", {
-        params: { token: this.props.token, groupID: this.props.id }
+      .delete("http://localhost:9003/api/groups", {
+        params: { userID: this.props.token, groupID: this.props.id }
       })
       .then(response => console.log(response));
   };

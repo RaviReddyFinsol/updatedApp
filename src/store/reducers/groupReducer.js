@@ -9,9 +9,14 @@ const initialState = {
 export default function groupReducer(state = initialState, action) {
   switch (action.type) {
     case actionTypes.GET_GROUP: {
+      if (action.val.groups === undefined) {
+        return {
+          state
+        };
+      }
       return {
         ...state,
-        groups: action.val.data
+        groups: action.val.groups
       };
     }
     case actionTypes.ADD_GROUP: {

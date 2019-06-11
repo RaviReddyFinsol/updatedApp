@@ -12,11 +12,10 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 class ViewSubGroup extends Component {
-  
-    deleteSubGroup = event => {
+  deleteSubGroup = event => {
     axios
-      .delete("http://localhost:9003/api/catogery/subGroup", {
-        params: { token: this.props.token, groupID: this.props.id }
+      .delete("http://localhost:9003/api/subGroups/subGroup", {
+        params: { userID: this.props.token, subGroupID: this.props.id }
       })
       .then(response => console.log(response));
   };
@@ -32,10 +31,12 @@ class ViewSubGroup extends Component {
           /> */}
           <CardContent>
             <Typography variant="body2" color="textSecondary" component="p">
-            {"SubGroup - "}{this.props.subGroupName}
+              {"SubGroup - "}
+              {this.props.subGroupName}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
-              {"Group - "}{this.props.groupName}
+              {"Group - "}
+              {this.props.groupName}
             </Typography>
           </CardContent>
         </CardActionArea>
