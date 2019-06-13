@@ -31,8 +31,8 @@ class AddSubGroup extends Component {
 
   componentDidMount() {
     axios
-      .get("http://localhost:9003/api/groups/groups", {
-        params: { token: this.props.match.params.token }
+      .get("http://localhost:9003/api/groups", {
+        params: { userID: this.props.match.params.token }
       })
       .then(response => {
         this.setState({ groups: response.data.groups });
@@ -75,12 +75,16 @@ class AddSubGroup extends Component {
       let formData = new FormData();
 
       formData.append("subGroupName", this.state.subGroupName);
-      formData.append("groupName", this.state.groupName);
+      formData.append("group", this.state.groupName);
       formData.append("image", this.state.image);
-      formData.append("token", this.props.match.params.token);
 
       axios
-        .post("http://localhost:9003/api/subGroups/add", formData, config)
+        .post(
+          "http://localhost:9003/api/subGroups",
+          formData,
+          { params: { userID: this.props.match.params.token } },
+          config
+        )
         .then(response => {
           this.setState({
             snackbarMessage: "SubGroup added successfully",

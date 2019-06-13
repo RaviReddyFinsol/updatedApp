@@ -14,7 +14,7 @@ import axios from "axios";
 class ViewSubGroup extends Component {
   deleteSubGroup = event => {
     axios
-      .delete("http://localhost:9003/api/subGroups/subGroup", {
+      .delete("http://localhost:9003/api/subGroups", {
         params: { userID: this.props.token, subGroupID: this.props.id }
       })
       .then(response => console.log(response));

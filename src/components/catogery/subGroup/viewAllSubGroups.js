@@ -21,8 +21,8 @@ class ViewAllSubGroups extends Component {
 
   componentDidMount() {
     axios
-      .get("http://localhost:9003/api/subGroups/subGroups", {
-        params: { token: this.props.token }
+      .get("http://localhost:9003/api/subGroups", {
+        params: { userID: this.props.token }
       })
       .then(response => {
         this.setState({ subGroups: response.data.subGroups });
