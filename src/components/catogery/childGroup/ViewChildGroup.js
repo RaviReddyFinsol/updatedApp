@@ -9,17 +9,9 @@ import Typography from "@material-ui/core/Typography";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import { Link } from "react-router-dom";
-import axios from "axios";
 
 class ViewChildGroup extends Component {
-  deleteChildGroup = event => {
-    axios
-      .delete("http://localhost:9003/api/catogery/group", {
-        params: { token: this.props.token, groupID: this.props.id }
-      })
-      .then(response => console.log(response));
-  };
-
+  
   render() {
     return (
       <Card>
@@ -51,7 +43,7 @@ class ViewChildGroup extends Component {
                 <EditIcon />
               </Link>
             </Button>
-            <Button size="small" color="primary" onClick={this.deleteChildGroup}>
+            <Button size="small" color="primary" onClick={() => this.props.delete(this.props.id)}>
               <DeleteIcon />
             </Button>
           </CardActions>

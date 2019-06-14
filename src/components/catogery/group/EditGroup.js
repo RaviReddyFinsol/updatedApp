@@ -4,6 +4,7 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
 import Snackbar from "@material-ui/core/Snackbar";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const mapStateToProps = state => {
   return {
@@ -41,15 +42,14 @@ class EditGroup extends Component {
           snackbarState: true,
           snackbarMessage: "Please select image which is less than 200Kb"
         });
-        setTimeout(() => {
-          this.setState({ snackbarState: false });
-        }, 3000);
+        this.snackbarTimeout();
       }
     }
   };
 
   saveGroup = event => {
     event.preventDefault();
+    this.setState({isLoading : true}, () => {    
     const config = {
       headers: {
         "content-type": "multipart/form-data"
@@ -58,8 +58,6 @@ class EditGroup extends Component {
 
     const formData = new FormData();
     formData.append("groupName", this.state.groupName);
-    //formData.append("userID", this.props.match.params.token);
-    //formData.append("groupID", this.props.match.params.id);
     formData.append("image", this.state.image);
 
     axios
@@ -75,30 +73,24 @@ class EditGroup extends Component {
         config
       )
       .then(response => {
-        console.log(response);
         this.setState({
-          snackbarMessage: "Group updated successfully",
-          snackbarState: true
+          snackbarMessage:response.data.message,
+          snackbarState: true,isLoading:false
         });
+        this.snackbarTimeout();
       })
       .catch(error => {
-        console.log(error);
         this.setState({
           snackbarState: true,
-          snackbarMessage: "Something went wrong.Try again after some time"
+          snackbarMessage: "Unable to connect to server",isLoading:false
         });
+        this.snackbarTimeout();
       });
-
-    setTimeout(() => {
-      this.setState({ snackbarState: false });
-    }, 3000);
+    })
   };
 
   componentDidMount() {
-    var editGroup = this.props.groups.find(
-      i => i._id === this.props.match.params.id
-    );
-    if (editGroup === undefined) {
+    this.setState({ isLoading: true }, () => {
       axios
         .get("http://localhost:9003/api/groups/group", {
           params: {
@@ -107,44 +99,61 @@ class EditGroup extends Component {
           }
         })
         .then(response => {
-          this.setState({
-            groupName: response.data.group.groupName,
-            imageURL: response.data.group.imagePath
-          });
+          if (response.data.isSuccess) {
+            this.setState({
+              groupName: response.data.group.groupName,
+              imageURL: response.data.group.imagePath,
+              isLoading: false
+            });
+          }
+          else
+          {
+            this.setState({ isLoading: false, snackbarState: true, snackbarMessage: response.data.message })
+            this.snackbarTimeout();
+          }
         })
-        .catch(error => {});
-    } else {
-      this.setState({
-        groupName: editGroup.groupName,
-        imageURL: editGroup.imagePath
-      });
-    }
+        .catch(error => {
+          this.setState({ isLoading: false, snackbarState: true, snackbarMessage: "unable to connect to server" })
+          this.snackbarTimeout();
+        });
+    })
+  }
+
+  snackbarTimeout = () => {
+    setTimeout(() => {
+      this.setState({ snackbarState: false });
+    }, 3000);
   }
 
   render() {
     return (
-      <form onSubmit={this.saveGroup}>
-        <TextField
-          label="GN"
-          name="groupName"
-          onChange={this.inputChanged}
-          value={this.state.groupName}
-        />
-        <br />
-        <img src={this.state.imageURL} alt={""} />
-        <br />
-        <input type="file" onChange={this.fileUpdated} accept="image/*" />
-        <br />
-        <Button type="submit">u</Button>
-        <Snackbar
-          message={this.state.snackbarMessage}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "center"
-          }}
-          open={this.state.snackbarState}
-        />
-      </form>
+      <React.Fragment>
+        {this.state.isLoading ? (
+          <CircularProgress />
+        ) : (
+            <form onSubmit={this.saveGroup}>
+              <TextField
+                label="GN"
+                name="groupName"
+                onChange={this.inputChanged}
+                value={this.state.groupName}
+              />
+              <br />
+              <img src={this.state.imageURL} alt={""} />
+              <br />
+              <input type="file" onChange={this.fileUpdated} accept="image/*" />
+              <br />
+              <Button type="submit">u</Button>
+              <Snackbar
+                message={this.state.snackbarMessage}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "center"
+                }}
+                open={this.state.snackbarState}
+              />
+            </form>)}
+      </React.Fragment>
     );
   }
 }

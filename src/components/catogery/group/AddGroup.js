@@ -4,7 +4,6 @@ import Button from "@material-ui/core/Button";
 import axios from "axios";
 import Snackbar from "@material-ui/core/Snackbar";
 import CircularProgress from "@material-ui/core/CircularProgress";
-//import LineDots from '../../loadingIndicators/LineDots';
 
 class AddGroup extends Component {
   constructor(props) {
@@ -37,9 +36,7 @@ class AddGroup extends Component {
           snackbarState: true,
           snackbarMessage: "Please select image which is less than 200Kb"
         });
-        setTimeout(() => {
-          this.setState({ snackbarState: false });
-        }, 3000);
+        this.snackbarTimeout();
       }
     }
   };
@@ -56,7 +53,6 @@ class AddGroup extends Component {
       const formData = new FormData();
       formData.append("groupName", this.state.groupName);
       formData.append("image", this.state.image);
-      //formData.append("token", this.props.match.params.token);
 
       axios
         .post(
@@ -71,22 +67,24 @@ class AddGroup extends Component {
             snackbarState: true,
             isLoading: false
           });
-          setTimeout(() => {
-            this.setState({ snackbarState: false });
-          }, 3000);
+          this.snackbarTimeout();
         })
         .catch(error => {
           this.setState({
-            snackbarMessage: "Something went wrong.Try again after some time",
+            snackbarMessage: "Unable to connect to server",
             snackbarState: true,
             isLoading: false
           });
-          setTimeout(() => {
-            this.setState({ snackbarState: false });
-          }, 3000);
+         this.snackbarTimeout();
         });
     });
   };
+
+  snackbarTimeout = () => {
+    setTimeout(() => {
+      this.setState({ snackbarState: false });
+    }, 3000);
+  }
 
   render() {
     return (

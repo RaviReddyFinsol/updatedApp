@@ -51,7 +51,8 @@ class Catogery extends Component {
           break;
         }
         case "ViewChildGroup": {
-          editPageName = EditChildGroup;
+          routeComponent = EditChildGroup;
+          editPageName = "Edit Child Group"
           viewLinkName = "Edit Child Group";
           viewLinkName = "View Child Group";
           addLinkName = "Add Child Group";

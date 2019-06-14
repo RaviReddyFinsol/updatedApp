@@ -1,5 +1,5 @@
 export const setCookie = (cookies, token) => {
-  cookies.set("NR_Token", token, { path: "/", maxAge: 7200 });
+  cookies.set("NR_Token", token, { path: "/", maxAge: 21600 });
 };
 
 export const getCookie = cookies => {
