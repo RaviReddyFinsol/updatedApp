@@ -13,6 +13,7 @@ const mapStateToProps = state => {
 };
 
 class EditGroup extends Component {
+  isComponentUnmounted = false;
   constructor(props) {
     super(props);
     this.state = {
@@ -28,7 +29,16 @@ class EditGroup extends Component {
     this.setState({ [event.target.name]: event.target.value });
   };
 
+  componentWillUnmount() {
+    this.isComponentUnmounted = true;
+  }
+
   fileUpdated = event => {
+    const MIME_TYPE_MAP = {
+      "image/png": "png",
+      "image/jpeg": "jpg",
+      "image/jpg": "jpg"
+    };
     let file = event.target.files[0];
     if (file !== undefined) {
       if (file.size < 20000) {
@@ -44,49 +54,77 @@ class EditGroup extends Component {
         });
         this.snackbarTimeout();
       }
+      if (MIME_TYPE_MAP[file.type]) {
+        this.setState({ image: event.target.files[0] });
+        this.setState({ imageURL: URL.createObjectURL(event.target.files[0]) });
+      } else {
+        event.target.value = null;
+        this.setState({
+          image: "",
+          imageURL: "",
+          snackbarState: true,
+          snackbarMessage: "Please select valid image(JPG/JPEG/PNG)"
+        });
+        this.snackbarTimeout();
+      }
     }
   };
 
   saveGroup = event => {
     event.preventDefault();
-    this.setState({isLoading : true}, () => {    
-    const config = {
-      headers: {
-        "content-type": "multipart/form-data"
-      }
-    };
-
-    const formData = new FormData();
-    formData.append("groupName", this.state.groupName);
-    formData.append("image", this.state.image);
-
-    axios
-      .put(
-        "http://localhost:9003/api/groups",
-        formData,
-        {
-          params: {
-            userID: this.props.match.params.token,
-            groupID: this.props.match.params.id
+    if (
+      this.state.groupName !== undefined ||
+      this.state.groupName !== "" ||
+      this.state.groupName.length !== 0
+    ) {
+      this.setState({ isLoading: true }, () => {
+        const config = {
+          headers: {
+            "content-type": "multipart/form-data"
           }
-        },
-        config
-      )
-      .then(response => {
-        this.setState({
-          snackbarMessage:response.data.message,
-          snackbarState: true,isLoading:false
-        });
-        this.snackbarTimeout();
-      })
-      .catch(error => {
-        this.setState({
-          snackbarState: true,
-          snackbarMessage: "Unable to connect to server",isLoading:false
-        });
-        this.snackbarTimeout();
+        };
+
+        const formData = new FormData();
+        formData.append("groupName", this.state.groupName);
+        formData.append("image", this.state.image);
+
+        axios
+          .put(
+            "http://localhost:9003/api/groups",
+            formData,
+            {
+              params: {
+                userID: this.props.match.params.token,
+                groupID: this.props.match.params.id
+              }
+            },
+            config
+          )
+          .then(response => {
+            this.setState({
+              snackbarMessage: response.data.message,
+              snackbarState: true,
+              isLoading: false
+            });
+            this.snackbarTimeout();
+          })
+          .catch(error => {
+            this.setState({
+              snackbarState: true,
+              snackbarMessage: "Unable to connect to server",
+              isLoading: false
+            });
+            this.snackbarTimeout();
+          });
       });
-    })
+    } else {
+      this.setState({
+        snackbarMessage: "Please enter valid Group name",
+        snackbarState: true,
+        isLoading: false
+      });
+      this.snackbarTimeout();
+    }
   };
 
   componentDidMount() {
@@ -105,25 +143,33 @@ class EditGroup extends Component {
               imageURL: response.data.group.imagePath,
               isLoading: false
             });
-          }
-          else
-          {
-            this.setState({ isLoading: false, snackbarState: true, snackbarMessage: response.data.message })
+          } else {
+            this.setState({
+              isLoading: false,
+              snackbarState: true,
+              snackbarMessage: response.data.message
+            });
             this.snackbarTimeout();
           }
         })
         .catch(error => {
-          this.setState({ isLoading: false, snackbarState: true, snackbarMessage: "unable to connect to server" })
+          this.setState({
+            isLoading: false,
+            snackbarState: true,
+            snackbarMessage: "unable to connect to server"
+          });
           this.snackbarTimeout();
         });
-    })
+    });
   }
 
   snackbarTimeout = () => {
     setTimeout(() => {
-      this.setState({ snackbarState: false });
+      if (!this.isComponentUnmounted) {
+        this.setState({ snackbarState: false });
+      }
     }, 3000);
-  }
+  };
 
   render() {
     return (
@@ -131,28 +177,29 @@ class EditGroup extends Component {
         {this.state.isLoading ? (
           <CircularProgress />
         ) : (
-            <form onSubmit={this.saveGroup}>
-              <TextField
-                label="GN"
-                name="groupName"
-                onChange={this.inputChanged}
-                value={this.state.groupName}
-              />
-              <br />
-              <img src={this.state.imageURL} alt={""} />
-              <br />
-              <input type="file" onChange={this.fileUpdated} accept="image/*" />
-              <br />
-              <Button type="submit">u</Button>
-              <Snackbar
-                message={this.state.snackbarMessage}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "center"
-                }}
-                open={this.state.snackbarState}
-              />
-            </form>)}
+          <form onSubmit={this.saveGroup}>
+            <TextField
+              label="GN"
+              name="groupName"
+              onChange={this.inputChanged}
+              value={this.state.groupName}
+            />
+            <br />
+            <img src={this.state.imageURL} alt={""} />
+            <br />
+            <input type="file" onChange={this.fileUpdated} accept="image/*" />
+            <br />
+            <Button type="submit">u</Button>
+            <Snackbar
+              message={this.state.snackbarMessage}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "center"
+              }}
+              open={this.state.snackbarState}
+            />
+          </form>
+        )}
       </React.Fragment>
     );
   }

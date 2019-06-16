@@ -71,6 +71,7 @@ class Login extends Component {
           name="password"
           onChange={this.handleChange}
           margin="normal"
+          type="password"
         />
         <br />
         <Button

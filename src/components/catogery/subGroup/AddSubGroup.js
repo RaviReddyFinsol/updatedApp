@@ -15,6 +15,7 @@ const mapStateToProps = state => {
 };
 
 class AddSubGroup extends Component {
+  isComponentUnmounted = false;
   constructor(props) {
     super(props);
     this.state = {
@@ -36,10 +37,11 @@ class AddSubGroup extends Component {
         })
         .then(response => {
           this.setState({ isLoading: false, groups: response.data.groups });
-        }).catch(err => {
-          this.setState({ isLoading: false })
+        })
+        .catch(err => {
+          this.setState({ isLoading: false });
         });
-    })
+    });
   }
 
   inputChanged = event => {
@@ -48,6 +50,11 @@ class AddSubGroup extends Component {
 
   fileUpdated = event => {
     let file = event.target.files[0];
+    const MIME_TYPE_MAP = {
+      "image/png": "png",
+      "image/jpeg": "jpg",
+      "image/jpg": "jpg"
+    };
     if (file !== undefined) {
       if (file.size < 200000) {
         this.setState({ image: event.target.files[0] });
@@ -62,49 +69,67 @@ class AddSubGroup extends Component {
         });
         this.snackbarTimeout();
       }
+      if (MIME_TYPE_MAP[file.mimetype]) {
+        this.setState({ image: event.target.files[0] });
+        this.setState({ imageURL: URL.createObjectURL(event.target.files[0]) });
+      } else {
+        event.target.value = null;
+        this.setState({
+          image: "",
+          imageURL: "",
+          snackbarState: true,
+          snackbarMessage: "Please select valid image(JPG/JPEG/PNG)"
+        });
+        this.snackbarTimeout();
+      }
     }
   };
 
   saveSubGroup = event => {
     event.preventDefault();
-    this.setState({ isLoading: true }, () => {
+    if (
+      this.state.subGroupName !== undefined ||
+      this.state.subGroupName !== "" ||
+      this.state.subGroupName.length !== 0
+    ) {
       if (this.state.groupName !== "") {
-        const config = {
-          headers: {
-            "content-type": "multipart/form-data"
-          }
-        };
-        let formData = new FormData();
+        this.setState({ isLoading: true }, () => {
+          const config = {
+            headers: {
+              "content-type": "multipart/form-data"
+            }
+          };
+          let formData = new FormData();
 
-        formData.append("subGroupName", this.state.subGroupName);
-        formData.append("group", this.state.groupName);
-        formData.append("image", this.state.image);
+          formData.append("subGroupName", this.state.subGroupName);
+          formData.append("group", this.state.groupName);
+          formData.append("image", this.state.image);
 
-        axios
-          .post(
-            "http://localhost:9003/api/subGroups",
-            formData,
-            { params: { userID: this.props.match.params.token } },
-            config
-          )
-          .then(response => {
-            this.setState({
-              snackbarMessage: response.data.message,
-              snackbarState: true,
-              isLoading: false
+          axios
+            .post(
+              "http://localhost:9003/api/subGroups",
+              formData,
+              { params: { userID: this.props.match.params.token } },
+              config
+            )
+            .then(response => {
+              this.setState({
+                snackbarMessage: response.data.message,
+                snackbarState: true,
+                isLoading: false
+              });
+              this.snackbarTimeout();
+            })
+            .catch(error => {
+              this.setState({
+                snackbarMessage: "unable to connect to server",
+                snackbarState: true,
+                isLoading: false
+              });
+              this.snackbarTimeout();
             });
-            this.snackbarTimeout();
-          })
-          .catch(error => {
-            this.setState({
-              snackbarMessage: "unable to connect to server",
-              snackbarState: true,
-              isLoading: false
-            });
-            this.snackbarTimeout();
-          });
-      }
-      else{
+        });
+      } else {
         this.setState({
           snackbarMessage: "Please select any group",
           snackbarState: true,
@@ -112,14 +137,27 @@ class AddSubGroup extends Component {
         });
         this.snackbarTimeout();
       }
-    })
+    } else {
+      this.setState({
+        snackbarMessage: "Please enter valid SubGroup name",
+        snackbarState: true,
+        isLoading: false
+      });
+      this.snackbarTimeout();
+    }
   };
+
+  componentWillUnmount() {
+    this.isComponentUnmounted = true;
+  }
 
   snackbarTimeout = () => {
     setTimeout(() => {
-      this.setState({ snackbarState: false });
+      if (!this.isComponentUnmounted) {
+        this.setState({ snackbarState: false });
+      }
     }, 3000);
-  }
+  };
 
   render() {
     return (
@@ -127,53 +165,55 @@ class AddSubGroup extends Component {
         {this.state.isLoading ? (
           <CircularProgress />
         ) : (
-            <React.Fragment>
-              {this.state.groups.length !== 0 ? (
-                <form onSubmit={this.saveSubGroup}>
-                  <TextField
-                    label="SGN"
-                    name="subGroupName"
-                    onChange={this.inputChanged}
-                    value={this.state.subGroupName}
-                  />
-                  <br />
-                  {"G"}{" "}
-                  <Select
-                    value={this.state.groupName}
-                    onChange={this.inputChanged}
-                    name="groupName"
-                  >
-                    {this.state.groups.map(group => (
-                      <MenuItem key={group._id} value={group._id}>
-                        {group.groupName}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                  <br />
-                  <img src={this.state.imageURL} alt={""} />
-                  <br />
-                  <input type="file" onChange={this.fileUpdated} accept="image/*" />
-                  <br />
-                  <Button type="submit">S</Button>
-                  <Snackbar
-                    message={this.state.snackbarMessage}
-                    anchorOrigin={{
-                      vertical: "bottom",
-                      horizontal: "center"
-                    }}
-                    open={this.state.snackbarState}
-                  />
-                </form>
-              ) : (
-                  <h3>{"No group exists.Please add group first"}</h3>
-                )}
-            </React.Fragment>
-          )}
+          <React.Fragment>
+            {this.state.groups.length !== 0 ? (
+              <form onSubmit={this.saveSubGroup}>
+                <TextField
+                  label="SGN"
+                  name="subGroupName"
+                  onChange={this.inputChanged}
+                  value={this.state.subGroupName}
+                />
+                <br />
+                {"G"}{" "}
+                <Select
+                  value={this.state.groupName}
+                  onChange={this.inputChanged}
+                  name="groupName"
+                >
+                  {this.state.groups.map(group => (
+                    <MenuItem key={group._id} value={group._id}>
+                      {group.groupName}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <br />
+                <img src={this.state.imageURL} alt={""} />
+                <br />
+                <input
+                  type="file"
+                  onChange={this.fileUpdated}
+                  accept="image/*"
+                />
+                <br />
+                <Button type="submit">S</Button>
+                <Snackbar
+                  message={this.state.snackbarMessage}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "center"
+                  }}
+                  open={this.state.snackbarState}
+                />
+              </form>
+            ) : (
+              <h3>{"No group exists.Please add group first"}</h3>
+            )}
+          </React.Fragment>
+        )}
       </React.Fragment>
     );
   }
 }
 
-export default connect(
-  mapStateToProps
-)(AddSubGroup);
+export default connect(mapStateToProps)(AddSubGroup);

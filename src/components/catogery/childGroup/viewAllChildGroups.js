@@ -17,8 +17,8 @@ class ViewAllChildGroups extends Component {
       childGroups: [],
       notification: "No Child Group exists.Please add one",
       isLoading: false,
-      snackbarState : false,
-      snackbarMessage : "",
+      snackbarState: false,
+      snackbarMessage: ""
     };
   }
 
@@ -33,42 +33,57 @@ class ViewAllChildGroups extends Component {
           params: { userID: this.props.token }
         })
         .then(response => {
-          this.setState({ childGroups: response.data.childGroups, isLoading: false });
-        }).catch(err => {
+          this.setState({
+            childGroups: response.data.childGroups,
+            isLoading: false
+          });
+        })
+        .catch(err => {
           this.setState({ isLoading: false });
         });
-    })
-  }
+    });
+  };
 
-deleteChildGroup = childGroupID => {
-  this.setState({isLoading : true}, () => {
-  axios
-  .delete("http://localhost:9003/api/childGroups", {
-    params: { userID: this.props.token, childGroupID: this.props.id }
-  })
-  .then(response => {
-    if(response.data.isSuccess)
-      this.setState({snackbarMessage : response.data.message, snackbarState: true},() => {
-        this.snackbarTimeout();
-        this.getChildGroups();
-      })
-      else
-      {
-        this.setState({snackbarMessage : response.data.message, snackbarState: true,isLoading : false})
-        this.snackbarTimeout();
-      }
-  }).catch(err=> {
-    this.setState({snackbarMessage : "unable to connect to server", snackbarState: true,isLoading : false})
-    this.snackbarTimeout();
-  });
-})
-}
+  deleteChildGroup = childGroupID => {
+    this.setState({ isLoading: true }, () => {
+      axios
+        .delete("http://localhost:9003/api/childGroups", {
+          params: { userID: this.props.token, childGroupID: childGroupID }
+        })
+        .then(response => {
+          if (response.data.isSuccess)
+            this.setState(
+              { snackbarMessage: response.data.message, snackbarState: true },
+              () => {
+                this.snackbarTimeout();
+                this.getChildGroups();
+              }
+            );
+          else {
+            this.setState({
+              snackbarMessage: response.data.message,
+              snackbarState: true,
+              isLoading: false
+            });
+            this.snackbarTimeout();
+          }
+        })
+        .catch(err => {
+          this.setState({
+            snackbarMessage: "unable to connect to server",
+            snackbarState: true,
+            isLoading: false
+          });
+          this.snackbarTimeout();
+        });
+    });
+  };
 
-snackbarTimeout = () => {
-  setTimeout(() => {
-    this.setState({ snackbarState: false });
-  }, 3000);
-}
+  snackbarTimeout = () => {
+    setTimeout(() => {
+      this.setState({ snackbarState: false });
+    }, 3000);
+  };
 
   render() {
     return (
@@ -76,29 +91,28 @@ snackbarTimeout = () => {
         {this.state.isLoading ? (
           <CircularProgress />
         ) : (
-            <React.Fragment>
-              {this.state.childGroups.length !== 0 ? (
-                this.state.childGroups.map(childGroup => (
-                  <ViewChildGroup
-                    key={childGroup._id}
-                    imagePath={childGroup.imagePath}
-                    childGroupName={childGroup.childGroupName}
-                    subGroupName={childGroup.subGroupName}
-                    isEditable={childGroup.isEditable}
-                    id={childGroup._id}
-                    token={this.props.token}
-                    delete={this.deleteChildGroup}
-                  />
-                ))
-              ) : (
-                  <h2> {this.state.notification}</h2>
-                )}
-            </React.Fragment>
-          )}
+          <React.Fragment>
+            {this.state.childGroups.length !== 0 ? (
+              this.state.childGroups.map(childGroup => (
+                <ViewChildGroup
+                  key={childGroup._id}
+                  imagePath={childGroup.imagePath}
+                  childGroupName={childGroup.childGroupName}
+                  subGroupName={childGroup.subGroupName}
+                  isEditable={childGroup.isEditable}
+                  id={childGroup._id}
+                  token={this.props.token}
+                  delete={this.deleteChildGroup}
+                />
+              ))
+            ) : (
+              <h2> {this.state.notification}</h2>
+            )}
+          </React.Fragment>
+        )}
       </React.Fragment>
     );
   }
 }
 
-export default connect(
-  mapStateToProps)(ViewAllChildGroups);
+export default connect(mapStateToProps)(ViewAllChildGroups);

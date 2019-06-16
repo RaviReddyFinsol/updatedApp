@@ -11,7 +11,6 @@ import EditIcon from "@material-ui/icons/Edit";
 import { Link } from "react-router-dom";
 
 class ViewChildGroup extends Component {
-  
   render() {
     return (
       <Card>
@@ -35,20 +34,24 @@ class ViewChildGroup extends Component {
             <Button size="small" color="primary">
               <Link
                 to={{
-                  pathname: `/catogery/${this.props.token}/ViewChildGroup/edit/${
-                    this.props.id
-                  }`
+                  pathname: `/catogery/${
+                    this.props.token
+                  }/ViewChildGroup/edit/${this.props.id}`
                 }}
               >
                 <EditIcon />
               </Link>
             </Button>
-            <Button size="small" color="primary" onClick={() => this.props.delete(this.props.id)}>
+            <Button
+              size="small"
+              color="primary"
+              onClick={() => this.props.delete(this.props.id)}
+            >
               <DeleteIcon />
             </Button>
           </CardActions>
         ) : (
-          <p>" "</p>
+          <p />
         )}
       </Card>
     );
