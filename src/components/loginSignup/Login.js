@@ -6,6 +6,8 @@ import axios from "axios";
 import * as actionTypes from "../../store/actionTypes";
 import { setCookie } from "../../cookies/cookie";
 import { withCookies } from "react-cookie";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Snackbar from "@material-ui/core/Snackbar";
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -15,22 +17,48 @@ const mapDispatchToProps = dispatch => {
 };
 
 class Login extends Component {
+  isComponentUnmounted = false;
   constructor(props) {
     super(props);
     this.state = {
       loginID: "",
       password: "",
-      message: ""
+      message: "",
+      snackbarState: false,
+      snackbarMessage: "",
+      isLoading: false
     };
   }
 
-  componentDidMount() {}
+  componentDidMount() { }
+
+  componentWillUnmount() {
+    this.isComponentUnmounted = true;
+  }
 
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
 
   login = () => {
+    if (this.state.loginID === undefined || this.state.loginID.length === 0) {
+      this.setState({
+        snackbarMessage: "Invalid Email/Phone number",
+        snackbarState: true,
+        isLoading: false
+      });
+      this.snackbarTimeout();
+      return;
+    }
+    if (this.state.password === undefined || this.state.password.length < 5) {
+      this.setState({
+        snackbarMessage: "Invalid Password",
+        snackbarState: true,
+        isLoading: false
+      });
+      this.snackbarTimeout();
+      return;
+    }
     var userLoginDetails = {
       userID: this.state.loginID,
       password: this.state.password
@@ -43,19 +71,31 @@ class Login extends Component {
           setCookie(this.props.cookies, val.data.token);
           this.props.userLogin(val.data.token);
         } else {
-          this.setState({ signupError: val.message });
-          this.props.closeDialog();
+          this.setState({ snackbarMessage: val.data.message,snackbarState:true,isLoading:false });
+          this.snackbarTimeout();
         }
       })
-      .catch(err => {
-        this.setState({ signupError: err });
-        this.props.closeDialog();
+      .catch(err => {        
+        this.setState({
+          snackbarMessage: "Unable to connect to server",
+          snackbarState: true,
+          isLoading: false
+        });
+        this.snackbarTimeout();
       });
+  };
+
+  snackbarTimeout = () => {
+    setTimeout(() => {
+      if (!this.isComponentUnmounted) {
+        this.setState({ snackbarState: false });
+      }
+    }, 3000);
   };
 
   render() {
     return (
-      <div>
+      <React.Fragment>
         <TextField
           autoFocus={true}
           label="Email/Mobile"
@@ -80,15 +120,23 @@ class Login extends Component {
           value="Login"
           fullWidth
           onClick={this.login}
-        >
-          Login
-        </Button>
+          disableFocusRipple={true} disableRipple={true} disabled={this.state.isLoading}> login {this.state.isLoading ? (
+            <CircularProgress color="secondary" size={25} />
+          ) : ""}</Button>
         <br />
         <br />
         <Button variant="contained" onClick={this.props.openSignup} fullWidth>
           New User?Signup
-        </Button>
-      </div>
+        </Button>         
+        <Snackbar
+          message={this.state.snackbarMessage}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "center"
+          }}
+          open={this.state.snackbarState}
+        />
+      </React.Fragment>
     );
   }
 }

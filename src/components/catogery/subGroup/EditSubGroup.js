@@ -6,6 +6,9 @@ import axios from "axios";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import Snackbar from "@material-ui/core/Snackbar";
+import DeleteIcon from '@material-ui/icons/Delete';
+import Tooltip from '@material-ui/core/Tooltip';
+import IconButton from '@material-ui/core/IconButton';
 
 class EditSubGroup extends Component {
   isComponentUnmounted = false;
@@ -63,6 +66,10 @@ class EditSubGroup extends Component {
       }
     }
   };
+
+  removeImage = () => {
+    this.setState({ image: "", imageURL: "" });
+  }
 
   saveGroup = event => {
     event.preventDefault();
@@ -231,15 +238,32 @@ class EditSubGroup extends Component {
                   )}
                 </Select>
                 <br />
-                <img src={this.state.imageURL} alt={""} />
                 <br />
-                <input
-                  type="file"
-                  onChange={this.fileUpdated}
-                  accept="image/*"
-                />
-                <br />
-                <Button type="submit">u</Button>
+        <input
+          accept="image/*"
+          style={{ display: 'none' }}
+          id="raised-button-file"
+          type="file"
+          onChange={this.fileUpdated}
+        />
+        <label htmlFor="raised-button-file">
+          <Button component="span" variant="outlined" disableFocusRipple={true} disableRipple={true}>
+            {this.state.image ? "Change image" : "Upload image"}
+          </Button>
+        </label>
+        <br />
+        
+          <img src={this.state.imageURL} alt={""} />
+          {this.state.image !== "" ? (<Tooltip title="Remove Image" placement="right">
+            <IconButton aria-label="Delete" onClick={this.removeImage} >
+              <DeleteIcon color="error" />
+            </IconButton>
+          </Tooltip>) : ""}
+        
+        <br />
+        <Button type="submit" variant="contained" color="primary" disableFocusRipple={true} disableRipple={true} disabled={this.state.isLoading}> update {this.state.isLoading ? (
+          <CircularProgress color="secondary" size={25} />
+        ) : ""}</Button>
                 <Snackbar
                   message={this.state.snackbarMessage}
                   anchorOrigin={{

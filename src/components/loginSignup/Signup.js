@@ -6,6 +6,8 @@ import { connect } from "react-redux";
 import * as actionTypes from "../../store/actionTypes";
 import { withCookies } from "react-cookie";
 import { setCookie } from "../../cookies/cookie";
+import Snackbar from "@material-ui/core/Snackbar";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -15,16 +17,22 @@ const mapDispatchToProps = dispatch => {
 };
 
 export class Signup extends Component {
+  isComponentUnmounted = false;
   constructor(props) {
     super(props);
 
     this.state = {
       userName: "",
       signupID: "",
-      password: "",
-      signupError: "",
-      isLoading: false
+      password: "",      
+      snackbarState: false,
+      snackbarMessage: "",
+      isLoading: false,
     };
+  }
+
+  componentWillUnmount() {
+    this.isComponentUnmounted = true;
   }
 
   handleChange = event => {
@@ -32,6 +40,34 @@ export class Signup extends Component {
   };
 
   signUp = () => {
+    if (this.state.userName === undefined || this.state.userName.length === 0) {
+      this.setState({
+        snackbarMessage: "Invalid User name",
+        snackbarState: true,
+        isLoading: false
+      });
+      this.snackbarTimeout();
+      return;
+    }
+    if (this.state.signupID === undefined || this.state.signupID.length === 0) {
+      this.setState({
+        snackbarMessage: "Invalid Email/Phone number",
+        snackbarState: true,
+        isLoading: false
+      });
+      this.snackbarTimeout();
+      return;
+    }
+    if (this.state.password === undefined || this.state.password.length < 5) {
+      this.setState({
+        snackbarMessage: "Invalid Password",
+        snackbarState: true,
+        isLoading: false
+      });
+      this.snackbarTimeout();
+      return;
+    }
+
     var userSignupDetails = {
       userName: this.state.userName,
       userID: this.state.signupID,
@@ -44,22 +80,31 @@ export class Signup extends Component {
           this.props.closeDialog();
           setCookie(this.props.cookies, val.data.token);
           this.props.userLogin(val.data.token);
-        } else {
-          this.setState({ signupError: val.message });
-        }
-        this.props.isLoading = false;
-        console.log(val);
+        } 
+        this.setState({ snackbarMessage: val.data.message,snackbarState:true,isLoading:false });
+        this.snackbarTimeout();
       })
       .catch(err => {
-        this.setState({ signupError: err });
-        this.props.closeDialog();
-        this.props.isLoading = false;
+        this.setState({
+          snackbarMessage: "Unable to connect to server",
+          snackbarState: true,
+          isLoading: false
+        });
+        this.snackbarTimeout();
       });
+  };
+
+  snackbarTimeout = () => {
+    setTimeout(() => {
+      if (!this.isComponentUnmounted) {
+        this.setState({ snackbarState: false });
+      }
+    }, 3000);
   };
 
   render() {
     return (
-      <div>
+      <React.Fragment>
         <TextField
           autoFocus={true}
           label="User Name"
@@ -93,15 +138,23 @@ export class Signup extends Component {
           color="primary"
           fullWidth
           onClick={this.signUp}
-        >
-          Signup
-        </Button>
+          disableFocusRipple={true} disableRipple={true} disabled={this.state.isLoading}> Signup {this.state.isLoading ? (
+            <CircularProgress color="secondary" size={25} />
+          ) : ""}</Button>
         <br />
         <br />
-        <Button variant="contained" onClick={this.props.openLogin} fullWidth>
+        <Button variant="contained" onClick={this.props.openLogin} fullWidth >
           Existing User?Login
-        </Button>
-      </div>
+        </Button> 
+         <Snackbar
+          message={this.state.snackbarMessage}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "center"
+          }}
+          open={this.state.snackbarState}
+        />
+      </React.Fragment>
     );
   }
 }

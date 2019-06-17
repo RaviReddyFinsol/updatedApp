@@ -5,6 +5,9 @@ import Button from "@material-ui/core/Button";
 import axios from "axios";
 import Snackbar from "@material-ui/core/Snackbar";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import DeleteIcon from '@material-ui/icons/Delete';
+import Tooltip from '@material-ui/core/Tooltip';
+import IconButton from '@material-ui/core/IconButton';
 
 const mapStateToProps = state => {
   return {
@@ -69,6 +72,10 @@ class EditGroup extends Component {
       }
     }
   };
+
+  removeImage = () => {
+    this.setState({ image: "", imageURL: "" });
+  }
 
   saveGroup = event => {
     event.preventDefault();
@@ -185,11 +192,33 @@ class EditGroup extends Component {
               value={this.state.groupName}
             />
             <br />
-            <img src={this.state.imageURL} alt={""} />
             <br />
-            <input type="file" onChange={this.fileUpdated} accept="image/*" />
-            <br />
-            <Button type="submit">u</Button>
+        <br />
+        <input
+          accept="image/*"
+          style={{ display: 'none' }}
+          id="raised-button-file"
+          type="file"
+          onChange={this.fileUpdated}
+        />
+        <label htmlFor="raised-button-file">
+          <Button component="span" variant="outlined" disableFocusRipple={true} disableRipple={true}>
+            {this.state.image ? "Change image" : "Upload image"}
+          </Button>
+        </label>
+        <br />
+        
+          <img src={this.state.imageURL} alt={""} />
+          {this.state.image !== "" ? (<Tooltip title="Remove Image" placement="right">
+            <IconButton aria-label="Delete" onClick={this.removeImage} >
+              <DeleteIcon color="error" />
+            </IconButton>
+          </Tooltip>) : ""}
+        
+        <br />
+        <Button type="submit" variant="contained" color="primary" disableFocusRipple={true} disableRipple={true} disabled={this.state.isLoading}> update {this.state.isLoading ? (
+          <CircularProgress color="secondary" size={25} />
+        ) : ""}</Button>
             <Snackbar
               message={this.state.snackbarMessage}
               anchorOrigin={{
