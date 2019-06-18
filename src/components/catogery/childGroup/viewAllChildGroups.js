@@ -11,6 +11,7 @@ const mapStateToProps = state => {
 };
 
 class ViewAllChildGroups extends Component {
+  isComponentUnmounted = false;
   constructor(props) {
     super(props);
     this.state = {
@@ -24,6 +25,10 @@ class ViewAllChildGroups extends Component {
 
   componentDidMount() {
     this.getChildGroups();
+  }
+
+  componentWillUnmount() {
+    this.isComponentUnmounted = true;
   }
 
   getChildGroups = () => {
@@ -81,7 +86,9 @@ class ViewAllChildGroups extends Component {
 
   snackbarTimeout = () => {
     setTimeout(() => {
-      this.setState({ snackbarState: false });
+      if (!this.isComponentUnmounted) {
+        this.setState({ snackbarState: false });
+      }
     }, 3000);
   };
 

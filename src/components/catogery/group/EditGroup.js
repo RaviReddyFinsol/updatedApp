@@ -24,7 +24,9 @@ class EditGroup extends Component {
       image: "",
       imageURL: "",
       snackbarState: false,
-      snackbarMessage: ""
+      snackbarMessage: "",
+      isComponentLoading: false,
+      isGroupSaveLoading: false,
     };
   }
 
@@ -77,14 +79,14 @@ class EditGroup extends Component {
     this.setState({ image: "", imageURL: "" });
   }
 
-  saveGroup = event => {
+  updateGroup = event => {
     event.preventDefault();
     if (
       this.state.groupName !== undefined ||
       this.state.groupName !== "" ||
       this.state.groupName.length !== 0
     ) {
-      this.setState({ isLoading: true }, () => {
+      this.setState({ isGroupSaveLoading: true }, () => {
         const config = {
           headers: {
             "content-type": "multipart/form-data"
@@ -94,6 +96,7 @@ class EditGroup extends Component {
         const formData = new FormData();
         formData.append("groupName", this.state.groupName);
         formData.append("image", this.state.image);
+        formData.append("imageURL",this.state.imageURL);
 
         axios
           .put(
@@ -111,7 +114,7 @@ class EditGroup extends Component {
             this.setState({
               snackbarMessage: response.data.message,
               snackbarState: true,
-              isLoading: false
+              isGroupSaveLoading: false
             });
             this.snackbarTimeout();
           })
@@ -119,7 +122,7 @@ class EditGroup extends Component {
             this.setState({
               snackbarState: true,
               snackbarMessage: "Unable to connect to server",
-              isLoading: false
+              isGroupSaveLoading: false
             });
             this.snackbarTimeout();
           });
@@ -128,14 +131,14 @@ class EditGroup extends Component {
       this.setState({
         snackbarMessage: "Please enter valid Group name",
         snackbarState: true,
-        isLoading: false
+        isGroupSaveLoading: false
       });
       this.snackbarTimeout();
     }
   };
 
   componentDidMount() {
-    this.setState({ isLoading: true }, () => {
+    this.setState({ isComponentLoading: true }, () => {
       axios
         .get("http://localhost:9003/api/groups/group", {
           params: {
@@ -148,11 +151,11 @@ class EditGroup extends Component {
             this.setState({
               groupName: response.data.group.groupName,
               imageURL: response.data.group.imagePath,
-              isLoading: false
+              isComponentLoading: false
             });
           } else {
             this.setState({
-              isLoading: false,
+              isComponentLoading: false,
               snackbarState: true,
               snackbarMessage: response.data.message
             });
@@ -161,7 +164,7 @@ class EditGroup extends Component {
         })
         .catch(error => {
           this.setState({
-            isLoading: false,
+            isComponentLoading: false,
             snackbarState: true,
             snackbarMessage: "unable to connect to server"
           });
@@ -181,18 +184,18 @@ class EditGroup extends Component {
   render() {
     return (
       <React.Fragment>
-        {this.state.isLoading ? (
+        {this.state.isComponentLoading ? (
           <CircularProgress />
         ) : (
-          <form onSubmit={this.saveGroup}>
-            <TextField
-              label="GN"
-              name="groupName"
-              onChange={this.inputChanged}
-              value={this.state.groupName}
-            />
-            <br />
-            <br />
+      <form onSubmit={this.updateGroup}>
+        <TextField
+          label="GN"
+          name="groupName"
+          onChange={this.inputChanged}
+          value={this.state.groupName}
+        />
+        <br />
+        <br />
         <br />
         <input
           accept="image/*"
@@ -203,33 +206,33 @@ class EditGroup extends Component {
         />
         <label htmlFor="raised-button-file">
           <Button component="span" variant="outlined" disableFocusRipple={true} disableRipple={true}>
-            {this.state.image ? "Change image" : "Upload image"}
+            {this.state.imageURL ? "Change image" : "Upload image"}
           </Button>
         </label>
         <br />
-        
-          <img src={this.state.imageURL} alt={""} />
-          {this.state.image !== "" ? (<Tooltip title="Remove Image" placement="right">
-            <IconButton aria-label="Delete" onClick={this.removeImage} >
-              <DeleteIcon color="error" />
-            </IconButton>
-          </Tooltip>) : ""}
-        
+
+        <img src={this.state.imageURL} alt={""} />
+        {this.state.imageURL !== "" ? (<Tooltip title="Remove Image" placement="right">
+          <IconButton aria-label="Delete" onClick={this.removeImage} >
+            <DeleteIcon color="error" />
+          </IconButton>
+        </Tooltip>) : ""}
+
         <br />
-        <Button type="submit" variant="contained" color="primary" disableFocusRipple={true} disableRipple={true} disabled={this.state.isLoading}> update {this.state.isLoading ? (
+        <Button type="submit" variant="contained" color="primary" disableFocusRipple={true} disableRipple={true} disabled={this.state.isGroupSaveLoading}> update {this.state.isGroupSaveLoading ? (
           <CircularProgress color="secondary" size={25} />
         ) : ""}</Button>
-            <Snackbar
-              message={this.state.snackbarMessage}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "center"
-              }}
-              open={this.state.snackbarState}
-            />
-          </form>
-        )}
-      </React.Fragment>
+        <Snackbar
+          message={this.state.snackbarMessage}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "center"
+          }}
+          open={this.state.snackbarState}
+        />
+      </form>
+     )}
+     </React.Fragment>
     );
   }
 }

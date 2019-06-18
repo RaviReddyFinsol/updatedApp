@@ -22,12 +22,13 @@ class AddChildGroup extends Component {
       imageURL: "",
       snackbarState: false,
       snackbarMessage: "",
-      isLoading: false
+      isComponentLoading: false,
+      isChildGroupSaveLoading: false,
     };
   }
 
   componentDidMount() {
-    this.setState({ isLoading: true }, () => {
+    this.setState({ isComponentLoading: true }, () => {
       axios
         .get("http://localhost:9003/api/subGroups", {
           params: { userID: this.props.match.params.token }
@@ -36,11 +37,11 @@ class AddChildGroup extends Component {
           if (response.data.isSuccess)
             this.setState({
               subGroups: response.data.subGroups,
-              isLoading: false
+              isComponentLoading: false
             });
           else {
             this.setState({
-              isLoading: false,
+              isComponentLoading: false,
               snackbarMessage: response.message,
               snackbarState: true
             });
@@ -49,7 +50,7 @@ class AddChildGroup extends Component {
         })
         .catch(err => {
           this.setState({
-            isLoading: false,
+            isComponentLoading: false,
             snackbarMessage: "unable to connect to server",
             snackbarState: true
           });
@@ -87,7 +88,7 @@ class AddChildGroup extends Component {
         });
         this.snackbarTimeout();
       }
-      if (MIME_TYPE_MAP[file.mimetype]) {
+      if (MIME_TYPE_MAP[file.type]) {
         this.setState({ image: event.target.files[0] });
         this.setState({ imageURL: URL.createObjectURL(event.target.files[0]) });
       } else {
@@ -111,7 +112,7 @@ class AddChildGroup extends Component {
       this.state.childGroupName.length !== 0
     ) {
       if (this.state.subGroupName !== "") {
-        this.setState({ isLoading: true }, () => {
+        this.setState({ isChildGroupSaveLoading: true }, () => {
           const config = {
             headers: {
               "content-type": "multipart/form-data"
@@ -133,7 +134,7 @@ class AddChildGroup extends Component {
             .then(response => {
               this.setState({
                 snackbarState: true,
-                isLoading: false,
+                isChildGroupSaveLoading: false,
                 snackbarMessage: response.data.message
               });
               this.snackbarTimeout();
@@ -141,7 +142,7 @@ class AddChildGroup extends Component {
             .catch(error => {
               this.setState({
                 snackbarState: true,
-                isLoading: false,
+                isChildGroupSaveLoading: false,
                 snackbarMessage: "unable to connect server"
               });
               this.snackbarTimeout();
@@ -178,72 +179,72 @@ class AddChildGroup extends Component {
   render() {
     return (
       <React.Fragment>
-        {this.state.isLoading ? (
+        {this.state.isComponentLoading ? (
           <CircularProgress />
         ) : (
-          <React.Fragment>
-            {this.state.subGroups.length !== 0 ? (
-              <form onSubmit={this.saveChildGroup}>
-                <TextField
-                  label="CGN"
-                  name="childGroupName"
-                  onChange={this.inputChanged}
-                  value={this.state.childGroupName}
-                />
-                <br />
+            <React.Fragment>
+              {this.state.subGroups.length !== 0 ? (
+                <form onSubmit={this.saveChildGroup}>
+                  <TextField
+                    label="CGN"
+                    name="childGroupName"
+                    onChange={this.inputChanged}
+                    value={this.state.childGroupName}
+                  />
+                  <br />
 
-                <Select
-                  value={this.state.subGroupName}
-                  onChange={this.inputChanged}
-                  name="subGroupName"
-                >
-                  {this.state.subGroups.map(subGroup => (
-                    <MenuItem key={subGroup._id} value={subGroup._id}>
-                      {subGroup.subGroupName}
-                    </MenuItem>
-                  ))}
-                </Select>
-                <br />
-                <br />
-        <input
-          accept="image/*"
-          style={{ display: 'none' }}
-          id="raised-button-file"
-          type="file"
-          onChange={this.fileUpdated}
-        />
-        <label htmlFor="raised-button-file">
-          <Button component="span" variant="outlined" disableFocusRipple={true} disableRipple={true}>
-            {this.state.image ? "Change image" : "Upload image"}
-          </Button>
-        </label>
-        <br />
-        
-          <img src={this.state.imageURL} alt={""} />
-          {this.state.image !== "" ? (<Tooltip title="Remove Image" placement="right">
-            <IconButton aria-label="Delete" onClick={this.removeImage} >
-              <DeleteIcon color="error" />
-            </IconButton>
-          </Tooltip>) : ""}
-        
-        <br />
-        <Button type="submit" variant="contained" color="primary" disableFocusRipple={true} disableRipple={true} disabled={this.state.isLoading}> save {this.state.isLoading ? (
-          <CircularProgress color="secondary" size={25} />
-        ) : ""}</Button>
-                <Snackbar
-                  message={this.state.snackbarMessage}
-                  anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "center"
-                  }}
-                  open={this.state.snackbarState}
-                />
-              </form>
-            ) : (
-              <h3>{"No sub group exists.Please add sub group first"}</h3>
-            )}
-          </React.Fragment>
-        )}
+                  <Select
+                    value={this.state.subGroupName}
+                    onChange={this.inputChanged}
+                    name="subGroupName"
+                  >
+                    {this.state.subGroups.map(subGroup => (
+                      <MenuItem key={subGroup._id} value={subGroup._id}>
+                        {subGroup.subGroupName}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  <br />
+                  <br />
+                  <input
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                    id="raised-button-file"
+                    type="file"
+                    onChange={this.fileUpdated}
+                  />
+                  <label htmlFor="raised-button-file">
+                    <Button component="span" variant="outlined" disableFocusRipple={true} disableRipple={true}>
+                      {this.state.image ? "Change image" : "Upload image"}
+                    </Button>
+                  </label>
+                  <br />
+
+                  <img src={this.state.imageURL} alt={""} />
+                  {this.state.image !== "" ? (<Tooltip title="Remove Image" placement="right">
+                    <IconButton aria-label="Delete" onClick={this.removeImage} >
+                      <DeleteIcon color="error" />
+                    </IconButton>
+                  </Tooltip>) : ""}
+
+                  <br />
+                  <Button type="submit" variant="contained" color="primary" disableFocusRipple={true} disableRipple={true} disabled={this.state.isChildGroupSaveLoading}> save {this.state.isChildGroupSaveLoading ? (
+                    <CircularProgress color="secondary" size={25} />
+                  ) : ""}</Button>
+                  <Snackbar
+                    message={this.state.snackbarMessage}
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "center"
+                    }}
+                    open={this.state.snackbarState}
+                  />
+                </form>
+              ) : (
+                  <h3>{"No sub group exists.Please add sub group first"}</h3>
+                )}
+            </React.Fragment>
+          )}
       </React.Fragment>
     );
   }
