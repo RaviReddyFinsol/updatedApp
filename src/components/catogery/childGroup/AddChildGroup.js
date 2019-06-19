@@ -9,6 +9,8 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import DeleteIcon from '@material-ui/icons/Delete';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
+import Paper from "@material-ui/core/Paper";
+import Grid from "@material-ui/core/Grid";
 
 class AddChildGroup extends Component {
   isComponentUnmounted = false;
@@ -182,68 +184,73 @@ class AddChildGroup extends Component {
         {this.state.isComponentLoading ? (
           <CircularProgress />
         ) : (
-            <React.Fragment>
-              {this.state.subGroups.length !== 0 ? (
-                <form onSubmit={this.saveChildGroup}>
-                  <TextField
-                    label="CGN"
-                    name="childGroupName"
-                    onChange={this.inputChanged}
-                    value={this.state.childGroupName}
-                  />
-                  <br />
+            <Grid container justify="center" alignItems="center">
+              <Grid item xs={12} sm={10} lg={8}>
+                <Paper style={{ padding: "10px" }}>
+                  {this.state.subGroups.length !== 0 ? (
+                    <form onSubmit={this.saveChildGroup}>
+                      <h4 style={{ color: "purple" }}>Add ChildGroup</h4>
+                      <TextField
+                        autoFocus={true}
+                        label="CGN"
+                        name="childGroupName"
+                        onChange={this.inputChanged}
+                        value={this.state.childGroupName}
+                      />
+                      <br />
+                      <Select
+                        value={this.state.subGroupName}
+                        onChange={this.inputChanged}
+                        name="subGroupName"
+                      >
+                        {this.state.subGroups.map(subGroup => (
+                          <MenuItem key={subGroup._id} value={subGroup._id}>
+                            {subGroup.subGroupName}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                      <br />
+                      <br />
+                      <input
+                        accept="image/*"
+                        style={{ display: 'none' }}
+                        id="raised-button-file"
+                        type="file"
+                        onChange={this.fileUpdated}
+                      />
+                      <label htmlFor="raised-button-file">
+                        <Button component="span" variant="outlined" disableFocusRipple={true} disableRipple={true}>
+                          {this.state.image ? "Change image" : "Upload image"}
+                        </Button>
+                      </label>
+                      <br />
 
-                  <Select
-                    value={this.state.subGroupName}
-                    onChange={this.inputChanged}
-                    name="subGroupName"
-                  >
-                    {this.state.subGroups.map(subGroup => (
-                      <MenuItem key={subGroup._id} value={subGroup._id}>
-                        {subGroup.subGroupName}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                  <br />
-                  <br />
-                  <input
-                    accept="image/*"
-                    style={{ display: 'none' }}
-                    id="raised-button-file"
-                    type="file"
-                    onChange={this.fileUpdated}
-                  />
-                  <label htmlFor="raised-button-file">
-                    <Button component="span" variant="outlined" disableFocusRipple={true} disableRipple={true}>
-                      {this.state.image ? "Change image" : "Upload image"}
-                    </Button>
-                  </label>
-                  <br />
+                      <img src={this.state.imageURL} alt={""} />
+                      {this.state.image !== "" ? (<Tooltip title="Remove Image" placement="right">
+                        <IconButton aria-label="Delete" onClick={this.removeImage} >
+                          <DeleteIcon color="error" />
+                        </IconButton>
+                      </Tooltip>) : ""}
 
-                  <img src={this.state.imageURL} alt={""} />
-                  {this.state.image !== "" ? (<Tooltip title="Remove Image" placement="right">
-                    <IconButton aria-label="Delete" onClick={this.removeImage} >
-                      <DeleteIcon color="error" />
-                    </IconButton>
-                  </Tooltip>) : ""}
-
-                  <br />
-                  <Button type="submit" variant="contained" color="primary" disableFocusRipple={true} disableRipple={true} disabled={this.state.isChildGroupSaveLoading}> save {this.state.isChildGroupSaveLoading ? (
-                    <CircularProgress color="secondary" size={25} />
-                  ) : ""}</Button>
-                  <Snackbar
-                    message={this.state.snackbarMessage}
-                    anchorOrigin={{
-                      vertical: "bottom",
-                      horizontal: "center"
-                    }}
-                    open={this.state.snackbarState}
-                  />
-                </form>
-              ) : (
-                  <h3>{"No sub group exists.Please add sub group first"}</h3>
-                )}
-            </React.Fragment>
+                      <br />
+                      <Button type="submit" variant="contained" color="primary" disableFocusRipple={true} disableRipple={true} disabled={this.state.isChildGroupSaveLoading}> save {this.state.isChildGroupSaveLoading ? (
+                        <CircularProgress color="secondary" size={25} />
+                      ) : ""}</Button>
+                      <Snackbar
+                        message={this.state.snackbarMessage}
+                        anchorOrigin={{
+                          vertical: "bottom",
+                          horizontal: "center"
+                        }}
+                        open={this.state.snackbarState}
+                      />
+                    </form>
+                  ) : (
+                      <h3>{"No sub group exists.Please add sub group first"}</h3>
+                    )}
+                </Paper>
+              </Grid>
+            </Grid>
           )}
       </React.Fragment>
     );

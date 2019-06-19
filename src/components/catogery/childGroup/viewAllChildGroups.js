@@ -3,6 +3,7 @@ import ViewChildGroup from "./ViewChildGroup";
 import { connect } from "react-redux";
 import axios from "axios";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Grid from "@material-ui/core/Grid";
 
 const mapStateToProps = state => {
   return {
@@ -98,9 +99,10 @@ class ViewAllChildGroups extends Component {
         {this.state.isLoading ? (
           <CircularProgress />
         ) : (
-          <React.Fragment>
+          <Grid container spacing={8} >
             {this.state.childGroups.length !== 0 ? (
               this.state.childGroups.map(childGroup => (
+                <Grid item xs={6} sm={4} lg={3}  key={childGroup._id}>
                 <ViewChildGroup
                   key={childGroup._id}
                   imagePath={childGroup.imagePath}
@@ -111,11 +113,12 @@ class ViewAllChildGroups extends Component {
                   token={this.props.token}
                   delete={this.deleteChildGroup}
                 />
+                </Grid>
               ))
             ) : (
               <h2> {this.state.notification}</h2>
             )}
-          </React.Fragment>
+         </Grid>
         )}
       </React.Fragment>
     );

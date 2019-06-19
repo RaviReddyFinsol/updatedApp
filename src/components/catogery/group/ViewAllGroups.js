@@ -85,14 +85,14 @@ snackbarTimeout = () => {
 
   render() {
     return (
-      <div>
+      <React.Fragment>
         {this.state.isLoading ? (
           <CircularProgress />
         ) : (
-            <Grid container spacing={8}>
+            <Grid container spacing={8} >
               {this.state.groups.length !== 0 ? (
                 this.state.groups.map(group => (
-                  <Grid item xs={6} sm={4} key={group._id}>
+                  <Grid item xs={6} sm={4} lg={3}  key={group._id}>
                     <ViewGroup
                       key={group._id}
                       imagePath={group.imagePath}
@@ -109,7 +109,7 @@ snackbarTimeout = () => {
                 )}
             </Grid>
           )}
-      </div>
+      </React.Fragment>
     );
   }
 }

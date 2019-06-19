@@ -7,6 +7,8 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import DeleteIcon from '@material-ui/icons/Delete';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
+import Paper from "@material-ui/core/Paper";
+import Grid from "@material-ui/core/Grid";
 
 class AddGroup extends Component {
   isComponentUnmounted = false;
@@ -132,51 +134,58 @@ class AddGroup extends Component {
   };
 
   render() {
-
     return (
-      <form onSubmit={this.saveGroup}>
-        <TextField
-          label="GN"
-          name="groupName"
-          onChange={this.inputChanged}
-          value={this.state.groupName}
-        />
-        <br />
-        <br />
-        <input
-          accept="image/*"
-          style={{ display: 'none' }}
-          id="raised-button-file"
-          type="file"
-          onChange={this.fileUpdated}
-        />
-        <label htmlFor="raised-button-file">
-          <Button component="span" variant="outlined" disableFocusRipple={true} disableRipple={true}>
-            {this.state.image ? "Change image" : "Upload image"}
-          </Button>
-        </label>
-        <br />
-        
-          <img src={this.state.imageURL} alt={""} />
-          {this.state.image !== "" ? (<Tooltip title="Remove Image" placement="right">
-            <IconButton aria-label="Delete" onClick={this.removeImage} >
-              <DeleteIcon color="error" />
-            </IconButton>
-          </Tooltip>) : ""}
-        
-        <br />
-        <Button type="submit" variant="contained" color="primary" disableFocusRipple={true} disableRipple={true} disabled={this.state.isLoading}> save {this.state.isLoading ? (
-          <CircularProgress color="secondary" size={25} />
-        ) : ""}</Button>
-        <Snackbar
-          message={this.state.snackbarMessage}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "center"
-          }}
-          open={this.state.snackbarState}
-        />
-      </form>
+      <Grid container justify="center" alignItems="center">
+        <Grid item xs={12} sm={10} lg={8}>
+          <Paper style={{ padding: "10px" }} >
+            <h4 style={{color:"purple"}}>Add Group</h4>
+            <form onSubmit={this.saveGroup}>
+              <TextField
+                autoFocus={true}
+                label="GN"
+                name="groupName"
+                onChange={this.inputChanged}
+                value={this.state.groupName}
+              />
+              <br />
+              <br />
+              <input
+                accept="image/*"
+                style={{ display: 'none' }}
+                id="raised-button-file"
+                type="file"
+                onChange={this.fileUpdated}
+              />
+              <label htmlFor="raised-button-file">
+                <Button component="span" variant="outlined" disableFocusRipple={true} disableRipple={true}>
+                  {this.state.image ? "Change image" : "Upload image"}
+                </Button>
+              </label>
+              <br />
+
+              <img src={this.state.imageURL} alt={""} />
+              {this.state.image !== "" ? (<Tooltip title="Remove Image" placement="right">
+                <IconButton aria-label="Delete" onClick={this.removeImage} >
+                  <DeleteIcon color="error" />
+                </IconButton>
+              </Tooltip>) : ""}
+
+              <br />
+              <Button type="submit" variant="contained" color="primary" disableFocusRipple={true} disableRipple={true} disabled={this.state.isLoading}> save {this.state.isLoading ? (
+                <CircularProgress color="secondary" size={25} />
+              ) : ""}</Button>
+              <Snackbar
+                message={this.state.snackbarMessage}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "center"
+                }}
+                open={this.state.snackbarState}
+              />
+            </form>
+          </Paper>
+        </Grid>
+      </Grid>
     );
   }
 }

@@ -13,7 +13,7 @@ const mapStateToProps = state => {
 class CatogeryMenu extends Component {
     render() {
         return (
-            <Grid container spacing={0}>
+            <Grid container spacing={8}>
                 <Grid item xs={6} sm={3}>
                     <Link to={{ pathname: `/catogery/${this.props.token}/ViewProduct` }} style={{ textDecoration: 'none', color: 'Black' }}><Paper>Product</Paper></Link>
                 </Grid>
@@ -27,12 +27,6 @@ class CatogeryMenu extends Component {
                     <Link to={{ pathname: `/catogery/${this.props.token}/ViewChildGroup` }} style={{ textDecoration: 'none', color: 'Black' }}><Paper>Child Group</Paper></Link>
                 </Grid>
             </Grid>
-            //  <React.Fragment>
-            //  <Link to={{pathname:`/catogery/${this.props.token}/ViewProduct`}}>Product</Link> {" "}
-            //  <Link to={{pathname:`/catogery/${this.props.token}/ViewGroup`}}>Group</Link> {" "}
-            //  <Link to={{pathname:`/catogery/${this.props.token}/ViewSubGroup`}}>Sub Group</Link> {" "}
-            //  <Link to={{pathname:`/catogery/${this.props.token}/ViewChildGroup`}}>Child Group</Link> {" "}
-            //  </React.Fragment>
         )
     }
 }

@@ -14,6 +14,7 @@ import EditSubGroup from "./subGroup/EditSubGroup";
 import EditChildGroup from "./childGroup/EditChildGroup";
 import EditProduct from "./product/EditProduct";
 import { connect } from "react-redux";
+import { Button } from "@material-ui/core";
 
 const mapStateToProps = state => {
   return {
@@ -26,33 +27,28 @@ class Catogery extends Component {
     let routeComponent = ViewAllProducts;
     let viewLinkName = "View Product";
     let addLinkName = "Add Product";
-    let editPageName = "";
     if (this.props.location.pathname.includes("/edit")) {
       switch (this.props.match.params.page) {
         case "ViewProduct": {
           routeComponent = EditProduct;
-          editPageName = "Edit Product";
           viewLinkName = "View Product";
           addLinkName = "Add Product";
           break;
         }
         case "ViewGroup": {
           routeComponent = EditGroup;
-          editPageName = "Edit Group";
           viewLinkName = "View Groups";
           addLinkName = "Add Group";
           break;
         }
         case "ViewSubGroup": {
           routeComponent = EditSubGroup;
-          editPageName = "Edit Sub-Group";
           viewLinkName = "View Sub-Group";
           addLinkName = "Add Sub-Group";
           break;
         }
         case "ViewChildGroup": {
           routeComponent = EditChildGroup;
-          editPageName = "Edit Child Group"
           viewLinkName = "Edit Child Group";
           viewLinkName = "View Child Group";
           addLinkName = "Add Child Group";
@@ -60,7 +56,6 @@ class Catogery extends Component {
         }
         default: {
           routeComponent = ViewAllProducts;
-          editPageName = "Add Product";
           viewLinkName = "View Product";
         }
       }
@@ -129,20 +124,25 @@ class Catogery extends Component {
         }
       }
     }
+
     return (
       <div className="row">
         {this.props.token !== undefined ? (
-          <div className="colum">
-            <Link
-              to={{
-                pathname: `/catogery/${this.props.match.params.token}/${
-                  this.props.match.params.page
-                }`
-              }}
-            >
-              {viewLinkName}
-            </Link>{" "}
-            <Link
+          <React.Fragment>
+          <Link style={{ textDecoration: 'none',color:'Blue'}}
+          to={{
+            pathname: `/catogery/${this.props.match.params.token}/${
+              this.props.match.params.page
+            }`
+          }}
+          >
+          <Button color="primary" disableFocusRipple={true} disableRipple={true} >
+          {viewLinkName}
+          </Button>
+          </Link>
+          {" "}
+          <Button color="primary" disableFocusRipple={true} disableRipple={true} >          
+            <Link style={{ textDecoration: 'none' ,color:'Blue'}}
               to={{
                 pathname: `/catogery/${this.props.match.params.token}/${
                   this.props.match.params.page
@@ -151,23 +151,12 @@ class Catogery extends Component {
             >
               {addLinkName}
             </Link>
-          </div>
+            </Button>
+          </React.Fragment>
         ) : (
           ""
         )}
-        {editPageName !== "" ? (
-          <p
-            style={{
-              color: "Green",
-              fontFamily: "Bold"
-            }}
-          >
-            {editPageName}
-          </p>
-        ) : (
-          ""
-        )}
-        <div className="colum">
+        <div className="colum" >
           <Switch>
             <Route
               exact

@@ -2,12 +2,16 @@ import React, { Component } from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Button from "@material-ui/core/Button";
 import LoginSignup from "../loginSignup/LoginSignup";
-import { Toolbar, Typography } from "@material-ui/core";
+import { Toolbar, Typography, Hidden } from "@material-ui/core";
 import "./Header.css";
 import { connect } from "react-redux";
 import * as actionTypes from "../../store/actionTypes";
 import UserMenu from "../loginSignup/UserMenu";
-import { withCookies } from "react-cookie";
+import SearchIcon from '@material-ui/icons/Search';
+import InputBase from '@material-ui/core/InputBase';
+//import { withCookies } from "react-cookie";
+import MenuIcon from '@material-ui/icons/Menu';
+//import withWidth from '@material-ui/core/withWidth';
 
 const mapStateToProps = state => {
   return {
@@ -25,42 +29,51 @@ const mapDispatchToProps = dispatch => {
 };
 
 class Header extends Component {
-  
+
   render() {
     return (
       <AppBar className="flex-container">
         <Toolbar>
-          <Typography color="inherit" variant="h6" style={{ flex: 1 }}>
-            N R
+          <Hidden smUp>
+            <MenuIcon />
+          </Hidden>
+          <Hidden xsDown>
+            <Typography variant="body2" color="secondary" component="h3">
+              N R
           </Typography>
-
+          </Hidden> 
+          {" "}<SearchIcon />
+          <InputBase
+            placeholder="Search…"
+          />
+          <Hidden xsDown>
           {this.props.token !== undefined ? (
             <UserMenu />
           ) : (
-            <Button
-              size="small"
-              color="inherit"
-              disableFocusRipple={true}
-              disableRipple={true}
-              disableTouchRipple={true}
-              onClick={this.props.openDialog}
-            >
-              Login & Signup
+              <Button
+                size="small"
+                color="inherit"
+                disableFocusRipple={true}
+                disableRipple={true}
+                disableTouchRipple={true}
+                onClick={this.props.openDialog}
+              >
+                Login & Signup
             </Button>
-          )}
-          <LoginSignup
-            open={this.props.isDialogOpened}
-            onClose={this.props.closeDialog}
-          />
+            )}
+          </Hidden>
+        <LoginSignup
+          open={this.props.isDialogOpened}
+          onClose={this.props.closeDialog}
+        />
         </Toolbar>
-      </AppBar>
+      </AppBar >
     );
   }
 }
 
-export default withCookies(
+export default
   connect(
     mapStateToProps,
     mapDispatchToProps
-  )(Header)
-);
+  )(Header);

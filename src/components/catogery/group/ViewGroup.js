@@ -1,9 +1,6 @@
 import React, { Component } from "react";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-//import CardMedia from "@material-ui/core/CardMedia";
+import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -14,40 +11,38 @@ class ViewGroup extends Component {
 
   render() {
     return (
-      <Card>
-        <CardActionArea>
-          <img src={this.props.imagePath} alt={""} />
-          {/* <CardMedia
-            style={{ height: 0, paddingTop: "46.25%" }}
-            image={this.props.imagePath}
-          /> */}
-          <CardContent>
-            <Typography variant="body2" color="textSecondary" component="p">
-              {this.props.groupName}
+      <Paper style={{height:'120px'}}>
+        <Grid container>
+          <Grid item xs={12} style={{height:'60px'}}>
+            {this.props.imagePath !== "" ? (<img src={this.props.imagePath} alt={""} style={{maxHeight:'50px'}}/>) : (<p>image not exists</p>)}
+          </Grid>
+          <Grid item xs={12} style={{height:'20px'}}>
+            <Typography variant="body2" color="textSecondary" component="h3">
+            {"Group - "} {this.props.groupName}
             </Typography>
-          </CardContent>
-        </CardActionArea>
-        {this.props.isEditable === true ? (
-          <CardActions>
-            <Button size="small" color="primary">
-              <Link
-                to={{
-                  pathname: `/catogery/${this.props.token}/ViewGroup/edit/${
-                    this.props.id
-                  }`
-                }}
-              >
-                <EditIcon />
-              </Link>
-            </Button>
-            <Button size="small" color="primary" onClick={() => this.props.delete(this.props.id)}>
-              <DeleteIcon />
-            </Button>
-          </CardActions>
-        ) : (
-          <p> </p>
-        )}
-      </Card>
+          </Grid>
+          {this.props.isEditable === true ? (
+            <Grid item xs={12} style={{height:'40px'}}>
+              <Button size="small" color="primary">
+                <Link
+                  to={{
+                    pathname: `/catogery/${this.props.token}/ViewGroup/edit/${
+                      this.props.id
+                      }`
+                  }}
+                >
+                  <EditIcon />
+                </Link>
+              </Button>
+              <Button size="small" color="primary" onClick={() => this.props.delete(this.props.id)}>
+                <DeleteIcon />
+              </Button>
+            </Grid>
+          ) : (
+              <p> </p>
+            )}
+        </Grid>
+      </Paper>
     );
   }
 }

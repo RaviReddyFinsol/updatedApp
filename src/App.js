@@ -33,9 +33,9 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
+      <div className="App" style={{padding:'5px'}}>
         <Header />
-        <h3>Natural Remedy</h3>
+        <h3>Natural Remedy</h3>        
         <CatogeryMenu />
         <Routes />
       </div>
