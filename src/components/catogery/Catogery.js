@@ -129,33 +129,33 @@ class Catogery extends Component {
       <div className="row">
         {this.props.token !== undefined ? (
           <React.Fragment>
-          <Link style={{ textDecoration: 'none',color:'Blue'}}
-          to={{
-            pathname: `/catogery/${this.props.match.params.token}/${
-              this.props.match.params.page
-            }`
-          }}
-          >
-          <Button color="primary" disableFocusRipple={true} disableRipple={true} >
-          {viewLinkName}
-          </Button>
-          </Link>
-          {" "}
-          <Button color="primary" disableFocusRipple={true} disableRipple={true} >          
-            <Link style={{ textDecoration: 'none' ,color:'Blue'}}
+            <Link style={{ textDecoration: 'none', color: 'Blue' }}
               to={{
                 pathname: `/catogery/${this.props.match.params.token}/${
                   this.props.match.params.page
-                }/add`
+                  }`
               }}
             >
-              {addLinkName}
+              <Button color="primary" disableFocusRipple={true} disableRipple={true} >
+                {viewLinkName}
+              </Button>
             </Link>
-            </Button>
+            {" "}
+            <Link style={{ textDecoration: 'none', color: 'Blue' }}
+              to={{
+                pathname: `/catogery/${this.props.match.params.token}/${
+                  this.props.match.params.page
+                  }/add`
+              }}
+            >
+              <Button color="primary" disableFocusRipple={true} disableRipple={true} >
+                {addLinkName}
+              </Button>
+            </Link>
           </React.Fragment>
         ) : (
-          ""
-        )}
+            ""
+          )}
         <div className="colum" >
           <Switch>
             <Route

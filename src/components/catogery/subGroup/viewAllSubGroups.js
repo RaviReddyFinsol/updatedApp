@@ -5,6 +5,7 @@ import { getSubGroups } from "../../../store/actionCreactors/subGroupActions";
 import axios from "axios";
 import Grid from "@material-ui/core/Grid";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Snackbar from "@material-ui/core/Snackbar";
 
 const mapStateToProps = state => {
   return {
@@ -100,27 +101,35 @@ class ViewAllSubGroups extends Component {
         {this.state.isLoading ? (
           <CircularProgress />
         ) : (
-          <Grid container spacing={8} >
-            {this.state.subGroups.length !== 0 ? (
-              this.state.subGroups.map(subGroup => (
-                <Grid item xs={6} sm={4} lg={3}  key={subGroup._id}>
-                <ViewSubGroup
-                  key={subGroup._id}
-                  imagePath={subGroup.imagePath}
-                  subGroupName={subGroup.subGroupName}
-                  groupName={subGroup.groupName}
-                  isEditable={subGroup.isEditable}
-                  id={subGroup._id}
-                  token={this.props.token}
-                  delete={this.deleteSubGroup}
-                />
-                </Grid>
-              ))
-            ) : (
-              <h2> {this.state.notification}</h2>
-            )}
-          </Grid>
-        )}
+            <Grid container spacing={8} >
+              {this.state.subGroups.length !== 0 ? (
+                this.state.subGroups.map(subGroup => (
+                  <Grid item xs={6} sm={4} lg={3} key={subGroup._id}>
+                    <ViewSubGroup
+                      key={subGroup._id}
+                      imagePath={subGroup.imagePath}
+                      subGroupName={subGroup.subGroupName}
+                      groupName={subGroup.groupName}
+                      isEditable={subGroup.isEditable}
+                      id={subGroup._id}
+                      token={this.props.token}
+                      delete={this.deleteSubGroup}
+                    />
+                  </Grid>
+                ))
+              ) : (
+                  <h2> {this.state.notification}</h2>
+                )}
+            </Grid>
+          )}
+        <Snackbar
+          message={this.state.snackbarMessage}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "center"
+          }}
+          open={this.state.snackbarState}
+        />
       </React.Fragment>
     );
   }

@@ -77,11 +77,10 @@ class EditSubGroup extends Component {
   updateSubGroup = event => {
     event.preventDefault();
     if (
-      this.state.subGroupName !== undefined ||
-      this.state.subGroupName !== "" ||
-      this.state.subGroupName.length !== 0
+      this.state.subGroupName !== undefined &&
+      this.state.subGroupName.trim().length !== 0
     ) {
-      if (this.state.selectedGroup !== "") {
+      if (this.state.selectedGroup !== undefined || this.state.selectedGroup !== "") {
         this.setState({ isSubGroupSaveLoading: true }, () => {
           const config = {
             headers: {
@@ -154,7 +153,11 @@ class EditSubGroup extends Component {
                 }
               })
               .then(response => {
-                if (response.data.isSuccess) {
+                if (response.data.isSuccess) {          
+                  if(!response.data.subGroup.group)
+                  {
+                    response.data.subGroup.group = "";
+                  }
                   this.setState({
                     groups: groupResponse.data.groups,
                     selectedGroup: response.data.subGroup.group,
@@ -223,16 +226,16 @@ class EditSubGroup extends Component {
                       <h4 style={{ color: "purple" }}>Edit SubGroup</h4>
                       <TextField
                         autoFocus={true}
-                        label="GN"
+                        label="SGN"
                         name="subGroupName"
                         onChange={this.inputChanged}
                         value={this.state.subGroupName}
                       />
-                      <br />
+                      <br />{"G "}
                       <Select
                         value={this.state.selectedGroup}
                         onChange={this.inputChanged}
-                        name="selectedGroup"
+                        name="selectedGroup" 
                       >
                         {this.state.groups ? (
                           this.state.groups.map(group => (

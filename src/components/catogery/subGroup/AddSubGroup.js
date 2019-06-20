@@ -97,9 +97,8 @@ class AddSubGroup extends Component {
   saveSubGroup = event => {
     event.preventDefault();
     if (
-      this.state.subGroupName !== undefined ||
-      this.state.subGroupName !== "" ||
-      this.state.subGroupName.length !== 0
+      this.state.subGroupName !== undefined &&
+      this.state.subGroupName.trim().length !== 0
     ) {
       if (this.state.groupName !== "") {
         this.setState({ isSubGroupSaveLoading: true }, () => {

@@ -77,9 +77,8 @@ class EditChildGroup extends Component {
   updateChildGroup = event => {
     event.preventDefault();
     if (
-      this.state.childGroupName !== "" ||
-      this.state.childGroupName !== undefined ||
-      this.state.childGroupName.length !== 0
+      this.state.childGroupName !== undefined &&
+      this.state.childGroupName.trim().length !== 0
     ) {
       if (this.state.selectedSubGroup !== "") {
         this.setState({ isChildGroupSaveLoading: true }, () => {
@@ -155,6 +154,10 @@ class EditChildGroup extends Component {
               })
               .then(response => {
                 if (response.data.isSuccess) {
+                  if(!response.data.childGroup.subGroup)
+                  {
+                    response.data.childGroup.subGroup = "";
+                  }
                   this.setState({
                     subGroups: groupResponse.data.subGroups,
                     selectedSubGroup: response.data.childGroup.subGroup,
@@ -228,8 +231,7 @@ class EditChildGroup extends Component {
                         onChange={this.inputChanged}
                         value={this.state.childGroupName}
                       />
-                      <br />
-
+                      <br />{"SG "}
                       <Select
                         value={this.state.selectedSubGroup}
                         onChange={this.inputChanged}
@@ -238,7 +240,7 @@ class EditChildGroup extends Component {
                         {this.state.subGroups.map(subGroup => (
                           <MenuItem value={subGroup._id} key={subGroup._id}>
                             {" "}
-                            {subGroup.groupName}{" "}
+                            {subGroup.subGroupName}{" "}
                           </MenuItem>
                         ))}
                       </Select>

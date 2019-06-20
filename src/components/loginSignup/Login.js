@@ -8,6 +8,7 @@ import { setCookie } from "../../cookies/cookie";
 import { withCookies } from "react-cookie";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Snackbar from "@material-ui/core/Snackbar";
+import PasswordField from 'material-ui-password-field';
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -71,11 +72,11 @@ class Login extends Component {
           setCookie(this.props.cookies, val.data.token);
           this.props.userLogin(val.data.token);
         } else {
-          this.setState({ snackbarMessage: val.data.message,snackbarState:true,isLoading:false });
+          this.setState({ snackbarMessage: val.data.message, snackbarState: true, isLoading: false });
           this.snackbarTimeout();
         }
       })
-      .catch(err => {        
+      .catch(err => {
         this.setState({
           snackbarMessage: "Unable to connect to server",
           snackbarState: true,
@@ -105,14 +106,11 @@ class Login extends Component {
           margin="normal"
         />
         <br />
-        <TextField
-          label="Password"
+        <PasswordField label="Password"
           value={this.state.password}
           name="password"
           onChange={this.handleChange}
-          margin="normal"
-          type="password"
-        />
+          />
         <br />
         <Button
           variant="contained"
@@ -127,7 +125,7 @@ class Login extends Component {
         <br />
         <Button variant="contained" onClick={this.props.openSignup} fullWidth>
           New User?Signup
-        </Button>         
+        </Button>
         <Snackbar
           message={this.state.snackbarMessage}
           anchorOrigin={{

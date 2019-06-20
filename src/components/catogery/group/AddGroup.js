@@ -72,9 +72,8 @@ class AddGroup extends Component {
   saveGroup = event => {
     event.preventDefault();
     if (
-      this.state.groupName !== undefined ||
-      this.state.groupName !== "" ||
-      this.state.groupName.length !== 0
+      this.state.groupName !== undefined &&
+      this.state.groupName.trim().length !== 0
     ) {
       this.setState({ isLoading: true }, () => {
         const config = {

@@ -108,10 +108,10 @@ class AddChildGroup extends Component {
 
   saveChildGroup = event => {
     event.preventDefault();
+    debugger;
     if (
-      this.state.childGroupName !== "" ||
-      this.state.childGroupName !== undefined ||
-      this.state.childGroupName.length !== 0
+      this.state.childGroupName !== undefined &&
+      this.state.childGroupName.trim().length !== 0
     ) {
       if (this.state.subGroupName !== "") {
         this.setState({ isChildGroupSaveLoading: true }, () => {
@@ -197,7 +197,7 @@ class AddChildGroup extends Component {
                         onChange={this.inputChanged}
                         value={this.state.childGroupName}
                       />
-                      <br />
+                      <br />{"SG "}
                       <Select
                         value={this.state.subGroupName}
                         onChange={this.inputChanged}
